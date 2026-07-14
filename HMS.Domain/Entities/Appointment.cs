@@ -16,8 +16,8 @@ namespace HMS.Domain.Entities
         public DateTime AppointmentDate { get; set; }
         public TimeSpan AppointmentTime { get; set; }
         public int DurationMinutes { get; set; } = 30;
-        public AppointmentType Type { get; set; }
-        public AppointmentStatus Status { get; set; } = AppointmentStatus.Scheduled;
+        //public AppointmentType Type { get; set; }
+        //public AppointmentStatus Status { get; set; } = AppointmentStatus.Scheduled;
         public string? ChiefComplaint { get; set; }
         public string? Notes { get; set; }
         public string? CancellationReason { get; set; }

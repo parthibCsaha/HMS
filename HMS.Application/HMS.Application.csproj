@@ -10,4 +10,8 @@
     <ProjectReference Include="..\HMS.Domain\HMS.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>
