@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace HMS.Application.Common.Exceptions;
 
-namespace HMS.Application.Common.Exceptions
+public class ValidationException : Exception
 {
-    internal class ValidationException
+    public IDictionary<string, string[]> Errors { get; }
+
+    public ValidationException() : base("One or more validation errors occurred.")
     {
+        Errors = new Dictionary<string, string[]>();
+    }
+
+    public ValidationException(IDictionary<string, string[]> errors) : base("One or more validation errors occurred.")
+    {
+        Errors = errors;
+    }
+
+    public ValidationException(string propertyName, string errorMessage) : base("One or more validation errors occurred.")
+    {
+        Errors = new Dictionary<string, string[]>
+        {
+            { propertyName, new[] { errorMessage } }
+        };
     }
 }

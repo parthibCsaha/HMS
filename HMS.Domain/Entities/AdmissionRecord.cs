@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +22,12 @@ namespace HMS.Domain.Entities
         public string? DischargeCondition { get; set; }  // Stable, Improved, Deceased, LAMA
         public bool IsActive { get; set; } = true;
         public Guid? DischargedBy { get; set; }
+        // Navigation Properties
+        public Patient Patient { get; set; } = null!;
+        public Doctor AdmittingDoctor { get; set; } = null!;
+        public Ward Ward { get; set; } = null!;
+        public Bed Bed { get; set; } = null!;
+        public ICollection<NursingNote> NursingNotes { get; set; } = [];
+        public ICollection<VitalSigns> VitalSigns { get; set; } = [];
     }
 }

@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +18,10 @@ namespace HMS.Domain.Entities
         public string NoteType { get; set; } = string.Empty;   // Admission, Shift, Medication, Observation, Discharge
         public string Note { get; set; } = string.Empty;
         public string? ActionTaken { get; set; }
+        // Navigation Properties
+        public Patient Patient { get; set; } = null!;
+        public AdmissionRecord? Admission { get; set; }
+        public Ward? Ward { get; set; }
+        public Bed? Bed { get; set; }
     }
 }

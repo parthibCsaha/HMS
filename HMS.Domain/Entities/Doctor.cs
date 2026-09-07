@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +23,13 @@ namespace HMS.Domain.Entities
         public TimeSpan? ConsultationStartTime { get; set; }
         public TimeSpan? ConsultationEndTime { get; set; }
         public int? SlotDurationMinutes { get; set; } = 30;
+        // Navigation Properties
+        public User User { get; set; } = null!;
+        public Department Department { get; set; } = null!;
+        public ICollection<Appointment> Appointments { get; set; } = [];
+        public ICollection<MedicalRecord> MedicalRecords { get; set; } = [];
+        public ICollection<Prescription> Prescriptions { get; set; } = [];
+        public ICollection<LabOrder> LabOrders { get; set; } = [];
+        public ICollection<AdmissionRecord> AdmissionRecords { get; set; } = [];
     }
 }

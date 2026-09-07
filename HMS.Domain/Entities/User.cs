@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -23,5 +23,9 @@ namespace HMS.Domain.Entities
         public DateTime? RefreshTokenExpiry { get; set; }
         public string? ProfileImageUrl { get; set; }
         public string FullName => $"{FirstName} {LastName}";
+        // Navigation Properties
+        public Patient? Patient { get; set; }
+        public Doctor? Doctor { get; set; }
+        public Staff? Staff { get; set; }
     }
 }

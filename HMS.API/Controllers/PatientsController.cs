@@ -1,31 +1,40 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using HMS.Application.Features.Patients.Commands;
+using HMS.Application.Features.Patients.Queries;
 using MediatR;
-using HMS.Application.Features.Patients.Queries.GetPatients;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
+namespace HMS.API.Controllers;
 
-namespace HMS.API.Controllers
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class PatientsController(ISender mediator) : ControllerBase
 {
-    [Authorize]
-    public class PatientsController : ControllerBase
+    [HttpGet]
+    public async Task<IActionResult> GetPatients([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10,
+        [FromQuery] string? searchTerm = null, [FromQuery] string? sortBy = null, [FromQuery] bool isDescending = false, CancellationToken ct = default)
+        => Ok(await mediator.Send(new GetPatientsQuery(pageNumber, pageSize, searchTerm, sortBy, isDescending), ct));
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetPatientById(Guid id, CancellationToken ct)
+        => Ok(await mediator.Send(new GetPatientByIdQuery(id), ct));
+
+    [HttpPost]
+    [Authorize(Roles = "Admin,Receptionist,Doctor,Nurse")]
+    public async Task<IActionResult> CreatePatient([FromBody] CreatePatientCommand command, CancellationToken ct)
+        => CreatedAtAction(nameof(GetPatientById), new { id = (await mediator.Send(command, ct)).Data }, null);
+
+    [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin,Receptionist,Doctor,Nurse")]
+    public async Task<IActionResult> UpdatePatient(Guid id, [FromBody] UpdatePatientCommand command, CancellationToken ct)
     {
-        [HttpGet]
-        public async Task<IActionResult> GetPatients(
-            [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10,
-            [FromQuery] string? search = null, [FromQuery] string? sortBy = null,
-            [FromQuery] bool descending = false, CancellationToken ct = default)
-        {
-            var result = await Mediator.Send(
-                new GetPatientsQuery(pageNumber, pageSize, search, sortBy, descending), ct);
-            return Ok(result);
-        }
-
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetPatient(Guid id, CancellationToken ct)
-        {
-            var result = await Mediator.Send(new GetPatientByIdQuery(id), ct);
-            return Ok(result);
-        }
-
+        if (id != command.Id) return BadRequest("ID mismatch.");
+        return Ok(await mediator.Send(command, ct));
     }
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeletePatient(Guid id, CancellationToken ct)
+        => Ok(await mediator.Send(new DeletePatientCommand(id), ct));
 }

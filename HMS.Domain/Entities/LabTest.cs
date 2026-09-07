@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +21,7 @@ namespace HMS.Domain.Entities
         public int? TurnaroundTimeHours { get; set; }
         public bool IsActive { get; set; } = true;
         public bool RequiresFasting { get; set; } = false;
+        // Navigation Properties
+        public ICollection<LabOrderItem> LabOrderItems { get; set; } = [];
     }
 }

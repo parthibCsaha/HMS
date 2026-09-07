@@ -63,8 +63,9 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# Local app secrets
+# Local app secrets and configuration
 HMS.API/appsettings.Local.json
+HMS.API/appsettings.json
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt

@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,5 +28,7 @@ namespace HMS.Domain.Entities
         public bool IsActive { get; set; } = true;
         public bool RequiresPrescription { get; set; } = true;
         public bool IsControlledSubstance { get; set; } = false;
+        // Navigation Properties
+        public ICollection<PrescriptionItem> PrescriptionItems { get; set; } = [];
     }
 }

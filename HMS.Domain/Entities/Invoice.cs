@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -31,5 +31,10 @@ namespace HMS.Domain.Entities
         public string? Notes { get; set; }
         public string? InsuranceClaimNumber { get; set; }
         public decimal? InsuranceCoveredAmount { get; set; }
+        // Navigation Properties
+        public Patient Patient { get; set; } = null!;
+        public Appointment? Appointment { get; set; }
+        public AdmissionRecord? Admission { get; set; }
+        public ICollection<InvoiceItem> Items { get; set; } = [];
     }
 }

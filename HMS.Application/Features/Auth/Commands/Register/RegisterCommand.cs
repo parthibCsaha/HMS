@@ -5,7 +5,8 @@ using MediatR;
 
 namespace HMS.Application.Features.Auth.Commands.Register
 {
-    public record RegisterCommand(
+    public record RegisterCommand
+        (
             string FirstName,
             string LastName,
             string Email,
@@ -13,5 +14,5 @@ namespace HMS.Application.Features.Auth.Commands.Register
             string Password,
             UserRole Role
 
-    ) : IRequest<ApiResponse<AuthResponseDto>>;
+        ) : IRequest<ApiResponse<AuthResponseDto>>;
 }

@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -20,5 +20,10 @@ namespace HMS.Domain.Entities
         public decimal? ChargePerDay { get; set; }
         public string? Location { get; set; }
         public bool IsActive { get; set; } = true;
+        // Navigation Properties
+        public Department Department { get; set; } = null!;
+        public ICollection<Bed> Beds { get; set; } = [];
+        public ICollection<AdmissionRecord> AdmissionRecords { get; set; } = [];
+        public ICollection<Staff> Staff { get; set; } = [];
     }
 }

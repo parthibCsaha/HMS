@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +20,10 @@ namespace HMS.Domain.Entities
         public bool IsDispensed { get; set; } = false;
         public DateTime? DispensedAt { get; set; }
         public Guid? DispensedBy { get; set; }
+        // Navigation Properties
+        public MedicalRecord MedicalRecord { get; set; } = null!;
+        public Patient Patient { get; set; } = null!;
+        public Doctor Doctor { get; set; } = null!;
+        public ICollection<PrescriptionItem> Items { get; set; } = [];
     }
 }

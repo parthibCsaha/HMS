@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +18,8 @@ namespace HMS.Domain.Entities
         public int Quantity { get; set; }
         public string? Instructions { get; set; }
         public bool IsDispensed { get; set; } = false;
+        // Navigation Properties
+        public Prescription Prescription { get; set; } = null!;
+        public Medication Medication { get; set; } = null!;
     }
 }

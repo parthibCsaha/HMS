@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,5 +30,12 @@ namespace HMS.Domain.Entities
         public string? FollowUpInstructions { get; set; }
         public DateTime? FollowUpDate { get; set; }
         public bool IsConfidential { get; set; } = false;
+        // Navigation Properties
+        public Patient Patient { get; set; } = null!;
+        public Doctor Doctor { get; set; } = null!;
+        public Appointment? Appointment { get; set; }
+        public AdmissionRecord? Admission { get; set; }
+        public ICollection<Prescription> Prescriptions { get; set; } = [];
+        public ICollection<LabOrder> LabOrders { get; set; } = [];
     }
 }

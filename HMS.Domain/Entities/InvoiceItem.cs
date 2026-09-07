@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +20,7 @@ namespace HMS.Domain.Entities
         public decimal DiscountPercent { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal TotalPrice { get; set; }
+        // Navigation Properties
+        public Invoice Invoice { get; set; } = null!;
     }
 }

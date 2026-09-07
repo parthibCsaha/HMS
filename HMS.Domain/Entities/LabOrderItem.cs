@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,5 +14,9 @@ namespace HMS.Domain.Entities
         public Guid LabTestId { get; set; }
         public LabTestStatus Status { get; set; } = LabTestStatus.Pending;
         public decimal Price { get; set; }
+        // Navigation Properties
+        public LabOrder LabOrder { get; set; } = null!;
+        public LabTest LabTest { get; set; } = null!;
+        public LabResult? Result { get; set; }
     }
 }

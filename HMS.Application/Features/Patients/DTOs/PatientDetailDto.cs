@@ -1,0 +1,11 @@
+﻿namespace HMS.Application.Features.Patients.DTOs;
+
+public record PatientDetailDto(
+    Guid Id, Guid UserId, string PatientCode, string FirstName, string LastName,
+    string Email, string Phone, DateTime DateOfBirth, int Age,
+    string Gender, string BloodGroup, string Address, string City,
+    string State, string Country, string PostalCode,
+    string EmergencyContactName, string EmergencyContactPhone, string EmergencyContactRelation,
+    string? InsuranceProvider, string? InsurancePolicyNumber, DateTime? InsuranceExpiry,
+    string? Allergies, string? ChronicConditions, string? Notes,
+    bool IsAdmitted, DateTime CreatedAt, DateTime? UpdatedAt);

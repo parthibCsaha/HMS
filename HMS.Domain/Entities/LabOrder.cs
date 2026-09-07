@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -24,5 +24,11 @@ namespace HMS.Domain.Entities
         public Guid? ProcessedBy { get; set; }
         public DateTime? ProcessedAt { get; set; }
         public bool IsBilled { get; set; } = false;
+        // Navigation Properties
+        public Patient Patient { get; set; } = null!;
+        public Doctor OrderingDoctor { get; set; } = null!;
+        public MedicalRecord? MedicalRecord { get; set; }
+        public AdmissionRecord? Admission { get; set; }
+        public ICollection<LabOrderItem> Items { get; set; } = [];
     }
 }

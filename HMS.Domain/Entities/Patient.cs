@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -33,5 +33,15 @@ namespace HMS.Domain.Entities
         public bool IsAdmitted { get; set; } = false;
         public int Age => DateTime.UtcNow.Year - DateOfBirth.Year -
             (DateTime.UtcNow.DayOfYear < DateOfBirth.DayOfYear ? 1 : 0);
+        // Navigation Properties
+        public User User { get; set; } = null!;
+        public ICollection<Appointment> Appointments { get; set; } = [];
+        public ICollection<MedicalRecord> MedicalRecords { get; set; } = [];
+        public ICollection<Prescription> Prescriptions { get; set; } = [];
+        public ICollection<LabOrder> LabOrders { get; set; } = [];
+        public ICollection<AdmissionRecord> AdmissionRecords { get; set; } = [];
+        public ICollection<Invoice> Invoices { get; set; } = [];
+        public ICollection<VitalSigns> VitalSigns { get; set; } = [];
+        public ICollection<NursingNote> NursingNotes { get; set; } = [];
     }
 }

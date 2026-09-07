@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +26,7 @@ namespace HMS.Domain.Entities
         public bool IsSuccess { get; set; } = true;
         public string? ErrorMessage { get; set; }
         public DateTime LoggedAt { get; set; } = DateTime.UtcNow;
+        // Navigation Properties
+        public User? User { get; set; }
     }
 }

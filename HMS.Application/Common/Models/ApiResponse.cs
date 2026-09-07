@@ -14,7 +14,9 @@ namespace HMS.Application.Common.Models
         public IDictionary<string, string[]>? Errors { get; set; }
 
         public static ApiResponse<T> Success(T data, string message = "Operation completed successfully.")
-            => new() { Succeeded = true, Data = data, Message = message };
+        {
+            return new() { Succeeded = true, Message = message, Data = data };
+        }
 
         public static ApiResponse<T> Fail(string message, IDictionary<string, string[]>? errors = null)
             => new() { Succeeded = false, Message = message, Errors = errors };

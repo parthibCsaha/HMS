@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -19,5 +19,9 @@ namespace HMS.Domain.Entities
         public DateTime JoiningDate { get; set; }
         public string? Shift { get; set; }
         public bool IsActive { get; set; } = true;
+        // Navigation Properties
+        public User User { get; set; } = null!;
+        public Department? Department { get; set; }
+        public Ward? Ward { get; set; }
     }
 }

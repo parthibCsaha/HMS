@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +17,11 @@ namespace HMS.Domain.Entities
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public bool IsActive { get; set; } = true;
+        // Navigation Properties
+        public Doctor? HeadDoctor { get; set; }
+        public ICollection<Doctor> Doctors { get; set; } = [];
+        public ICollection<Ward> Wards { get; set; } = [];
+        public ICollection<Appointment> Appointments { get; set; } = [];
+        public ICollection<Staff> Staff { get; set; } = [];
     }
 }

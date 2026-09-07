@@ -1,4 +1,4 @@
-﻿using HMS.Domain.Common;
+using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +25,9 @@ namespace HMS.Domain.Entities
         public decimal? BloodGlucoseMgDl { get; set; }
         public string? PainLevel { get; set; }           // 0-10 scale
         public string? Notes { get; set; }
+        // Navigation Properties
+        public Patient Patient { get; set; } = null!;
+        public Appointment? Appointment { get; set; }
+        public AdmissionRecord? Admission { get; set; }
     }
 }

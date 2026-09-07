@@ -1,16 +1,11 @@
-﻿using HMS.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HMS.Domain.Entities;
 
-namespace HMS.Application.Common.Interfaces.Repositories
+namespace HMS.Application.Common.Interfaces.Repositories;
+
+public interface IUserRepository : IRepository<User>
 {
-    public interface IUserRepository
-    {
-        Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default);
-        Task<Guid> CreateAsync(User user, CancellationToken ct = default);
-
-    }
+    Task<User?> GetByEmailAsync(string email, CancellationToken ct = default);
+    Task<bool> EmailExistsAsync(string email, CancellationToken ct = default);
+    Task UpdateRefreshTokenAsync(Guid userId, string? refreshToken, DateTime? expiry, CancellationToken ct = default);
+    Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct = default);
 }
