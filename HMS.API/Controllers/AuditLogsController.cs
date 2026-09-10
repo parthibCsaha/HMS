@@ -8,12 +8,27 @@ namespace HMS.API.Controllers;
 [ApiController]
 [Route("api/audit-logs")]
 [Authorize(Roles = "Admin")]
-public class AuditLogsController(ISender mediator) : ControllerBase
+public class AuditLogsController(ISender _mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20,
-        [FromQuery] Guid? userId = null, [FromQuery] string? action = null,
-        [FromQuery] string? entityName = null, [FromQuery] DateTime? from = null,
-        [FromQuery] DateTime? to = null, CancellationToken ct = default)
-        => Ok(await mediator.Send(new GetAuditLogsQuery(pageNumber, pageSize, userId, action, entityName, from, to), ct));
+    public async Task<IActionResult> Get(
+        [FromQuery] int pageNumber = 1, 
+        [FromQuery] int pageSize = 20,
+        [FromQuery] Guid? userId = null, 
+        [FromQuery] string? action = null,
+        [FromQuery] string? entityName = null, 
+        [FromQuery] DateTime? from = null,
+        [FromQuery] DateTime? to = null, 
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var result = await _mediator.Send(new GetAuditLogsQuery(pageNumber, pageSize, userId, action, entityName, from, to), ct);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

@@ -13,7 +13,17 @@ public class BedsController(ISender mediator) : ControllerBase
 {
     [HttpGet("ward/{wardId:guid}")]
     public async Task<IActionResult> GetByWard(Guid wardId, CancellationToken ct)
-        => Ok(await mediator.Send(new GetBedsByWardQuery(wardId), ct));
+    {
+        try
+        {
+            var result = await mediator.Send(new GetBedsByWardQuery(wardId), ct);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
