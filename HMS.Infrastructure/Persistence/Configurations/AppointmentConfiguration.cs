@@ -27,22 +27,26 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.HasIndex(e => e.PatientId);
         builder.HasIndex(e => e.Status);
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany(p => p.Appointments)
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Doctor)
+        builder
+            .HasOne(e => e.Doctor)
             .WithMany(d => d.Appointments)
             .HasForeignKey(e => e.DoctorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Department)
+        builder
+            .HasOne(e => e.Department)
             .WithMany(d => d.Appointments)
             .HasForeignKey(e => e.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.ReferredByDoctor)
+        builder
+            .HasOne(e => e.ReferredByDoctor)
             .WithMany()
             .HasForeignKey(e => e.ReferredByDoctorId)
             .OnDelete(DeleteBehavior.SetNull);

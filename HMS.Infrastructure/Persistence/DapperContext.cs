@@ -7,7 +7,8 @@ namespace HMS.Infrastructure.Persistence;
 
 public class DapperContext(IConfiguration configuration) : IDapperContext
 {
-    private readonly string _connectionString = configuration.GetConnectionString("DefaultConnection")
+    private readonly string _connectionString =
+        configuration.GetConnectionString("DefaultConnection")
         ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
     public IDbConnection CreateConnection()

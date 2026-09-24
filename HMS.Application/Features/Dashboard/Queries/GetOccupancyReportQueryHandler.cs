@@ -4,8 +4,14 @@ using MediatR;
 
 namespace HMS.Application.Features.Dashboard.Queries;
 
-public class GetOccupancyReportQueryHandler(IDashboardRepository repo) : IRequestHandler<GetOccupancyReportQuery, ApiResponse<IEnumerable<OccupancyReportDto>>>
+public class GetOccupancyReportQueryHandler(IDashboardRepository repo)
+    : IRequestHandler<GetOccupancyReportQuery, ApiResponse<IEnumerable<OccupancyReportDto>>>
 {
-    public async Task<ApiResponse<IEnumerable<OccupancyReportDto>>> Handle(GetOccupancyReportQuery r, CancellationToken ct)
-        => ApiResponse<IEnumerable<OccupancyReportDto>>.Success(await repo.GetOccupancyReportAsync(ct));
+    public async Task<ApiResponse<IEnumerable<OccupancyReportDto>>> Handle(
+        GetOccupancyReportQuery r,
+        CancellationToken ct
+    ) =>
+        ApiResponse<IEnumerable<OccupancyReportDto>>.Success(
+            await repo.GetOccupancyReportAsync(ct)
+        );
 }

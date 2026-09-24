@@ -21,22 +21,26 @@ public class AdmissionRecordConfiguration : IEntityTypeConfiguration<AdmissionRe
         builder.HasIndex(e => e.AdmissionCode).IsUnique();
         builder.HasIndex(e => new { e.PatientId, e.IsActive });
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany(p => p.AdmissionRecords)
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.AdmittingDoctor)
+        builder
+            .HasOne(e => e.AdmittingDoctor)
             .WithMany(d => d.AdmissionRecords)
             .HasForeignKey(e => e.AdmittingDoctorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Ward)
+        builder
+            .HasOne(e => e.Ward)
             .WithMany(w => w.AdmissionRecords)
             .HasForeignKey(e => e.WardId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Bed)
+        builder
+            .HasOne(e => e.Bed)
             .WithMany(b => b.AdmissionRecords)
             .HasForeignKey(e => e.BedId)
             .OnDelete(DeleteBehavior.Restrict);

@@ -17,7 +17,10 @@ public class AuthController(ISender _mediator) : ControllerBase
 {
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterCommand command, CancellationToken ct)
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterCommand command,
+        CancellationToken ct
+    )
     {
         var result = await _mediator.Send(command, ct);
         return Ok(result);
@@ -33,7 +36,10 @@ public class AuthController(ISender _mediator) : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command, CancellationToken ct)
+    public async Task<IActionResult> RefreshToken(
+        [FromBody] RefreshTokenCommand command,
+        CancellationToken ct
+    )
     {
         var result = await _mediator.Send(command, ct);
         return Ok(result);
@@ -49,7 +55,10 @@ public class AuthController(ISender _mediator) : ControllerBase
 
     [Authorize]
     [HttpPost("change-password")]
-    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command, CancellationToken ct)
+    public async Task<IActionResult> ChangePassword(
+        [FromBody] ChangePasswordCommand command,
+        CancellationToken ct
+    )
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var result = await _mediator.Send(command, ct);

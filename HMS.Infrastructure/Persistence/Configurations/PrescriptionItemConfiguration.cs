@@ -17,12 +17,14 @@ public class PrescriptionItemConfiguration : IEntityTypeConfiguration<Prescripti
         builder.Property(e => e.Route).IsRequired().HasMaxLength(50);
         builder.Property(e => e.Instructions).HasMaxLength(500);
 
-        builder.HasOne(e => e.Prescription)
+        builder
+            .HasOne(e => e.Prescription)
             .WithMany(p => p.Items)
             .HasForeignKey(e => e.PrescriptionId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(e => e.Medication)
+        builder
+            .HasOne(e => e.Medication)
             .WithMany(m => m.PrescriptionItems)
             .HasForeignKey(e => e.MedicationId)
             .OnDelete(DeleteBehavior.Restrict);

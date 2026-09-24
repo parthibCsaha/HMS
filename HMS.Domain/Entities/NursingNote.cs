@@ -1,9 +1,9 @@
-using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
 
 namespace HMS.Domain.Entities
 {
@@ -15,9 +15,10 @@ namespace HMS.Domain.Entities
         public Guid? WardId { get; set; }
         public Guid? BedId { get; set; }
         public DateTime NoteDateTime { get; set; } = DateTime.UtcNow;
-        public string NoteType { get; set; } = string.Empty;   // Admission, Shift, Medication, Observation, Discharge
+        public string NoteType { get; set; } = string.Empty; // Admission, Shift, Medication, Observation, Discharge
         public string Note { get; set; } = string.Empty;
         public string? ActionTaken { get; set; }
+
         // Navigation Properties
         public Patient Patient { get; set; } = null!;
         public AdmissionRecord? Admission { get; set; }

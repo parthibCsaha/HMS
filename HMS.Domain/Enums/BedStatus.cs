@@ -8,7 +8,10 @@ namespace HMS.Domain.Enums
 {
     public enum BedStatus
     {
-        Available = 1, Occupied = 2, Reserved = 3,
-        UnderMaintenance = 4, Cleaning = 5
+        Available = 1,
+        Occupied = 2,
+        Reserved = 3,
+        UnderMaintenance = 4,
+        Cleaning = 5,
     }
 }

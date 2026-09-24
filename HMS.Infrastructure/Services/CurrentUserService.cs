@@ -10,16 +10,16 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
     {
         get
         {
-            var userId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = httpContextAccessor.HttpContext?.User?.FindFirstValue(
+                ClaimTypes.NameIdentifier
+            );
             return Guid.TryParse(userId, out var id) ? id : null;
         }
     }
 
-    public string? Email =>
-        httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
+    public string? Email => httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
 
-    public string? Role =>
-        httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);
+    public string? Role => httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);
 
     public bool IsAuthenticated =>
         httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;

@@ -1,18 +1,18 @@
-using HMS.Domain.Common;
-using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
+using HMS.Domain.Enums;
 
 namespace HMS.Domain.Entities
 {
     public class Patient : BaseEntity
     {
         public Guid UserId { get; set; }
-        public string PatientCode { get; set; } = string.Empty;   // PAT-00001
+        public string PatientCode { get; set; } = string.Empty; // PAT-00001
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
         public BloodGroup BloodGroup { get; set; }
@@ -31,8 +31,11 @@ namespace HMS.Domain.Entities
         public string? ChronicConditions { get; set; }
         public string? Notes { get; set; }
         public bool IsAdmitted { get; set; } = false;
-        public int Age => DateTime.UtcNow.Year - DateOfBirth.Year -
-            (DateTime.UtcNow.DayOfYear < DateOfBirth.DayOfYear ? 1 : 0);
+        public int Age =>
+            DateTime.UtcNow.Year
+            - DateOfBirth.Year
+            - (DateTime.UtcNow.DayOfYear < DateOfBirth.DayOfYear ? 1 : 0);
+
         // Navigation Properties
         public User User { get; set; } = null!;
         public ICollection<Appointment> Appointments { get; set; } = [];

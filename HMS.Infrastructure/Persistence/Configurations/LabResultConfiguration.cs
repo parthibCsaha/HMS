@@ -19,22 +19,26 @@ public class LabResultConfiguration : IEntityTypeConfiguration<LabResult>
         builder.Property(e => e.Notes).HasMaxLength(2000);
         builder.Property(e => e.AttachmentUrl).HasMaxLength(500);
 
-        builder.HasOne(e => e.LabOrderItem)
+        builder
+            .HasOne(e => e.LabOrderItem)
             .WithOne(loi => loi.Result)
             .HasForeignKey<LabResult>(e => e.LabOrderItemId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.LabOrder)
+        builder
+            .HasOne(e => e.LabOrder)
             .WithMany()
             .HasForeignKey(e => e.LabOrderId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany()
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.LabTest)
+        builder
+            .HasOne(e => e.LabTest)
             .WithMany()
             .HasForeignKey(e => e.LabTestId)
             .OnDelete(DeleteBehavior.Restrict);

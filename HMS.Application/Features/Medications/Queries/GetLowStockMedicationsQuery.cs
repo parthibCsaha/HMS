@@ -4,4 +4,5 @@ using MediatR;
 
 namespace HMS.Application.Features.Medications.Queries;
 
-public record GetLowStockMedicationsQuery : IRequest<ApiResponse<IEnumerable<MedicationListItemDto>>>;
+public record GetLowStockMedicationsQuery
+    : IRequest<ApiResponse<IEnumerable<MedicationListItemDto>>>;

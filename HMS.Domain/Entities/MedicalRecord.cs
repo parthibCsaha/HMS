@@ -1,15 +1,15 @@
-using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
 
 namespace HMS.Domain.Entities
 {
     public class MedicalRecord : BaseEntity
     {
-        public string RecordCode { get; set; } = string.Empty;   // MR-00001
+        public string RecordCode { get; set; } = string.Empty; // MR-00001
         public Guid PatientId { get; set; }
         public Guid DoctorId { get; set; }
         public Guid? AppointmentId { get; set; }
@@ -30,6 +30,7 @@ namespace HMS.Domain.Entities
         public string? FollowUpInstructions { get; set; }
         public DateTime? FollowUpDate { get; set; }
         public bool IsConfidential { get; set; } = false;
+
         // Navigation Properties
         public Patient Patient { get; set; } = null!;
         public Doctor Doctor { get; set; } = null!;

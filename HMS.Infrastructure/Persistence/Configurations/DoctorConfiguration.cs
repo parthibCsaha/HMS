@@ -24,12 +24,14 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.HasIndex(e => e.LicenseNumber).IsUnique();
         builder.HasIndex(e => e.UserId).IsUnique();
 
-        builder.HasOne(e => e.User)
+        builder
+            .HasOne(e => e.User)
             .WithOne(u => u.Doctor)
             .HasForeignKey<Doctor>(e => e.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Department)
+        builder
+            .HasOne(e => e.Department)
             .WithMany(d => d.Doctors)
             .HasForeignKey(e => e.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);

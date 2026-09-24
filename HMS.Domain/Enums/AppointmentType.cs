@@ -8,7 +8,10 @@ namespace HMS.Domain.Enums
 {
     public enum AppointmentType
     {
-        InPerson = 1, Telemedicine = 2, Emergency = 3,
-        FollowUp = 4, Referral = 5
+        InPerson = 1,
+        Telemedicine = 2,
+        Emergency = 3,
+        FollowUp = 4,
+        Referral = 5,
     }
 }

@@ -16,17 +16,23 @@ namespace HMS.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         // ──── EF Core ────
         services.AddSingleton<AuditableEntityInterceptor>();
 
-        services.AddDbContext<AppDbContext>((sp, options) =>
-        {
-            var interceptor = sp.GetRequiredService<AuditableEntityInterceptor>();
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
-                   .AddInterceptors(interceptor);
-        });
+        services.AddDbContext<AppDbContext>(
+            (sp, options) =>
+            {
+                var interceptor = sp.GetRequiredService<AuditableEntityInterceptor>();
+                options
+                    .UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                    .AddInterceptors(interceptor);
+            }
+        );
 
         // ──── Unit of Work & Dapper ────
         services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -67,26 +73,28 @@ public static class DependencyInjection
         // ──── Authentication ────
         services.AddHttpContextAccessor();
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
+        services
+            .AddAuthentication(options =>
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
-                ClockSkew = TimeSpan.Zero
-            };
-        });
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)
+                    ),
+                    ClockSkew = TimeSpan.Zero,
+                };
+            });
 
         services.AddAuthorization();
 

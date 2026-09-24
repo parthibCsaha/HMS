@@ -1,9 +1,9 @@
-using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
 
 namespace HMS.Domain.Entities
 {
@@ -25,6 +25,7 @@ namespace HMS.Domain.Entities
         public bool IsVerified { get; set; } = false;
         public Guid? VerifiedBy { get; set; }
         public DateTime? VerifiedAt { get; set; }
+
         // Navigation Properties
         public LabOrderItem LabOrderItem { get; set; } = null!;
         public LabOrder LabOrder { get; set; } = null!;

@@ -1,10 +1,10 @@
-using HMS.Domain.Common;
-using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
+using HMS.Domain.Enums;
 
 namespace HMS.Domain.Entities
 {
@@ -23,6 +23,7 @@ namespace HMS.Domain.Entities
         public DateTime? RefreshTokenExpiry { get; set; }
         public string? ProfileImageUrl { get; set; }
         public string FullName => $"{FirstName} {LastName}";
+
         // Navigation Properties
         public Patient? Patient { get; set; }
         public Doctor? Doctor { get; set; }

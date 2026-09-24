@@ -35,7 +35,8 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
         builder.HasIndex(e => e.PatientCode).IsUnique();
         builder.HasIndex(e => e.UserId).IsUnique();
 
-        builder.HasOne(e => e.User)
+        builder
+            .HasOne(e => e.User)
             .WithOne(u => u.Patient)
             .HasForeignKey<Patient>(e => e.UserId)
             .OnDelete(DeleteBehavior.Restrict);

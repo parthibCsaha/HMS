@@ -1,8 +1,8 @@
+using System.Reflection;
 using HMS.Application.Common.Interfaces.Services;
 using HMS.Domain.Common;
 using HMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace HMS.Infrastructure.Persistence;
 
@@ -10,9 +10,13 @@ public class AppDbContext : DbContext
 {
     private readonly ICurrentUserService? _currentUserService;
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options) { }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService)
+    public AppDbContext(
+        DbContextOptions<AppDbContext> options,
+        ICurrentUserService currentUserService
+    )
         : base(options)
     {
         _currentUserService = currentUserService;

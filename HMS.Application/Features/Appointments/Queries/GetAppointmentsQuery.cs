@@ -5,5 +5,12 @@ using MediatR;
 
 namespace HMS.Application.Features.Appointments.Queries;
 
-public record GetAppointmentsQuery(int PageNumber = 1, int PageSize = 10, string? SearchTerm = null,
-    Guid? DoctorId = null, Guid? PatientId = null, AppointmentStatus? Status = null, DateTime? Date = null) : IRequest<ApiResponse<PaginatedResponse<AppointmentListItemDto>>>;
+public record GetAppointmentsQuery(
+    int PageNumber = 1,
+    int PageSize = 10,
+    string? SearchTerm = null,
+    Guid? DoctorId = null,
+    Guid? PatientId = null,
+    AppointmentStatus? Status = null,
+    DateTime? Date = null
+) : IRequest<ApiResponse<PaginatedResponse<AppointmentListItemDto>>>;

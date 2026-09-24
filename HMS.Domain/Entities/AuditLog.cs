@@ -1,9 +1,9 @@
-using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
 
 namespace HMS.Domain.Entities
 {
@@ -12,11 +12,11 @@ namespace HMS.Domain.Entities
         public Guid? UserId { get; set; }
         public string UserEmail { get; set; } = string.Empty;
         public string UserRole { get; set; } = string.Empty;
-        public string Action { get; set; } = string.Empty;       // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
-        public string EntityName { get; set; } = string.Empty;   // Patient, Doctor, Invoice...
+        public string Action { get; set; } = string.Empty; // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
+        public string EntityName { get; set; } = string.Empty; // Patient, Doctor, Invoice...
         public Guid? EntityId { get; set; }
-        public string? OldValues { get; set; }                   // JSON snapshot before
-        public string? NewValues { get; set; }                   // JSON snapshot after
+        public string? OldValues { get; set; } // JSON snapshot before
+        public string? NewValues { get; set; } // JSON snapshot after
         public string? IpAddress { get; set; }
         public string? UserAgent { get; set; }
         public string? Endpoint { get; set; }
@@ -26,6 +26,7 @@ namespace HMS.Domain.Entities
         public bool IsSuccess { get; set; } = true;
         public string? ErrorMessage { get; set; }
         public DateTime LoggedAt { get; set; } = DateTime.UtcNow;
+
         // Navigation Properties
         public User? User { get; set; }
     }

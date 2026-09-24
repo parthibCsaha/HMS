@@ -20,17 +20,20 @@ public class StaffConfiguration : IEntityTypeConfiguration<Staff>
         builder.HasIndex(e => e.StaffCode).IsUnique();
         builder.HasIndex(e => e.UserId).IsUnique();
 
-        builder.HasOne(e => e.User)
+        builder
+            .HasOne(e => e.User)
             .WithOne(u => u.Staff)
             .HasForeignKey<Staff>(e => e.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Department)
+        builder
+            .HasOne(e => e.Department)
             .WithMany(d => d.Staff)
             .HasForeignKey(e => e.DepartmentId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(e => e.Ward)
+        builder
+            .HasOne(e => e.Ward)
             .WithMany(w => w.Staff)
             .HasForeignKey(e => e.WardId)
             .OnDelete(DeleteBehavior.SetNull);

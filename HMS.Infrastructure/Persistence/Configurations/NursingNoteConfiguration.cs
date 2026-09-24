@@ -18,22 +18,26 @@ public class NursingNoteConfiguration : IEntityTypeConfiguration<NursingNote>
 
         builder.HasIndex(e => new { e.PatientId, e.NoteDateTime });
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany(p => p.NursingNotes)
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Admission)
+        builder
+            .HasOne(e => e.Admission)
             .WithMany(a => a.NursingNotes)
             .HasForeignKey(e => e.AdmissionId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(e => e.Ward)
+        builder
+            .HasOne(e => e.Ward)
             .WithMany()
             .HasForeignKey(e => e.WardId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(e => e.Bed)
+        builder
+            .HasOne(e => e.Bed)
             .WithMany()
             .HasForeignKey(e => e.BedId)
             .OnDelete(DeleteBehavior.SetNull);

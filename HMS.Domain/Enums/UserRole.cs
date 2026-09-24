@@ -14,6 +14,6 @@ namespace HMS.Domain.Enums
         Receptionist = 4,
         Patient = 5,
         Pharmacist = 6,
-        LabTechnician = 7
+        LabTechnician = 7,
     }
 }

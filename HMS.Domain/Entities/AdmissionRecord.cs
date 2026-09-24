@@ -1,9 +1,9 @@
-using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
 
 namespace HMS.Domain.Entities
 {
@@ -19,9 +19,10 @@ namespace HMS.Domain.Entities
         public string ReasonForAdmission { get; set; } = string.Empty;
         public string? Diagnosis { get; set; }
         public string? DischargeSummary { get; set; }
-        public string? DischargeCondition { get; set; }  // Stable, Improved, Deceased, LAMA
+        public string? DischargeCondition { get; set; } // Stable, Improved, Deceased, LAMA
         public bool IsActive { get; set; } = true;
         public Guid? DischargedBy { get; set; }
+
         // Navigation Properties
         public Patient Patient { get; set; } = null!;
         public Doctor AdmittingDoctor { get; set; } = null!;

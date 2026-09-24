@@ -4,5 +4,9 @@ using MediatR;
 
 namespace HMS.Application.Features.Medications.Queries;
 
-public record GetMedicationsQuery(int PageNumber = 1, int PageSize = 10, string? SearchTerm = null, string? SortBy = null)
-    : IRequest<ApiResponse<PaginatedResponse<MedicationListItemDto>>>;
+public record GetMedicationsQuery(
+    int PageNumber = 1,
+    int PageSize = 10,
+    string? SearchTerm = null,
+    string? SortBy = null
+) : IRequest<ApiResponse<PaginatedResponse<MedicationListItemDto>>>;

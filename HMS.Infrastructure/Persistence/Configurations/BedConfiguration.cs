@@ -18,12 +18,14 @@ public class BedConfiguration : IEntityTypeConfiguration<Bed>
 
         builder.HasIndex(e => new { e.WardId, e.BedNumber }).IsUnique();
 
-        builder.HasOne(e => e.Ward)
+        builder
+            .HasOne(e => e.Ward)
             .WithMany(w => w.Beds)
             .HasForeignKey(e => e.WardId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.CurrentPatient)
+        builder
+            .HasOne(e => e.CurrentPatient)
             .WithMany()
             .HasForeignKey(e => e.CurrentPatientId)
             .OnDelete(DeleteBehavior.SetNull);

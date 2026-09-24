@@ -1,9 +1,9 @@
-using HMS.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
 
 namespace HMS.Domain.Entities
 {
@@ -17,14 +17,15 @@ namespace HMS.Domain.Entities
         public decimal? TemperatureCelsius { get; set; }
         public int? HeartRateBpm { get; set; }
         public int? RespiratoryRatePerMin { get; set; }
-        public string? BloodPressure { get; set; }       // e.g. "120/80"
+        public string? BloodPressure { get; set; } // e.g. "120/80"
         public decimal? OxygenSaturationPercent { get; set; }
         public decimal? WeightKg { get; set; }
         public decimal? HeightCm { get; set; }
         public decimal? BmiValue { get; set; }
         public decimal? BloodGlucoseMgDl { get; set; }
-        public string? PainLevel { get; set; }           // 0-10 scale
+        public string? PainLevel { get; set; } // 0-10 scale
         public string? Notes { get; set; }
+
         // Navigation Properties
         public Patient Patient { get; set; } = null!;
         public Appointment? Appointment { get; set; }

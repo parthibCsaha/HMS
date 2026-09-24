@@ -22,10 +22,12 @@ BEGIN
     -- Upsert and get next value
     INSERT INTO code_sequences (prefix, last_value)
     VALUES (p_prefix, 1)
-    ON CONFLICT (prefix) DO UPDATE SET last_value = code_sequences.last_value + 1
+    ON CONFLICT (prefix) 
+    DO UPDATE SET last_value = code_sequences.last_value + 1
     RETURNING last_value INTO v_next_val;
 
     v_code := p_prefix || '-' || LPAD(v_next_val::TEXT, 5, '0');
+    
     RETURN v_code;
 END;
 $$ LANGUAGE plpgsql;
@@ -46,16 +48,39 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
     SELECT
-        (SELECT COUNT(*) FROM patients WHERE is_deleted = false)::BIGINT,
-        (SELECT COUNT(*) FROM doctors WHERE is_deleted = false)::BIGINT,
-        (SELECT COUNT(*) FROM appointments WHERE appointment_date = CURRENT_DATE AND is_deleted = false)::BIGINT,
-        (SELECT COUNT(*) FROM admission_records WHERE is_active = true AND is_deleted = false)::BIGINT,
-        (SELECT COUNT(*) FROM beds WHERE status = 0 AND is_deleted = false)::BIGINT, -- 0 = Available
-        (SELECT COALESCE(SUM(paid_amount), 0) FROM invoices
-            WHERE invoice_date >= DATE_TRUNC('month', CURRENT_DATE) AND is_deleted = false),
-        (SELECT COALESCE(SUM(paid_amount), 0) FROM invoices
-            WHERE invoice_date >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '1 month')
-            AND invoice_date < DATE_TRUNC('month', CURRENT_DATE) AND is_deleted = false);
+        (SELECT COUNT(*) 
+         FROM patients 
+         WHERE is_deleted = false)::BIGINT,
+         
+        (SELECT COUNT(*) 
+         FROM doctors 
+         WHERE is_deleted = false)::BIGINT,
+         
+        (SELECT COUNT(*) 
+         FROM appointments 
+         WHERE appointment_date = CURRENT_DATE 
+           AND is_deleted = false)::BIGINT,
+           
+        (SELECT COUNT(*) 
+         FROM admission_records 
+         WHERE is_active = true 
+           AND is_deleted = false)::BIGINT,
+           
+        (SELECT COUNT(*) 
+         FROM beds 
+         WHERE status = 0 
+           AND is_deleted = false)::BIGINT, -- 0 = Available
+           
+        (SELECT COALESCE(SUM(paid_amount), 0) 
+         FROM invoices
+         WHERE invoice_date >= DATE_TRUNC('month', CURRENT_DATE) 
+           AND is_deleted = false),
+           
+        (SELECT COALESCE(SUM(paid_amount), 0) 
+         FROM invoices
+         WHERE invoice_date >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '1 month')
+           AND invoice_date < DATE_TRUNC('month', CURRENT_DATE) 
+           AND is_deleted = false);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -77,17 +102,35 @@ BEGIN
         w.id,
         w.name::TEXT,
         w.total_beds,
-        (SELECT COUNT(*) FROM beds b WHERE b.ward_id = w.id AND b.status = 1 AND b.is_deleted = false)::BIGINT,
-        (SELECT COUNT(*) FROM beds b WHERE b.ward_id = w.id AND b.status = 0 AND b.is_deleted = false)::BIGINT,
-        CASE WHEN w.total_beds > 0
-            THEN ROUND(
-                (SELECT COUNT(*) FROM beds b WHERE b.ward_id = w.id AND b.status = 1 AND b.is_deleted = false)::NUMERIC
-                / w.total_beds * 100, 2)
+        (SELECT COUNT(*) 
+         FROM beds b 
+         WHERE b.ward_id = w.id 
+           AND b.status = 1 
+           AND b.is_deleted = false)::BIGINT,
+           
+        (SELECT COUNT(*) 
+         FROM beds b 
+         WHERE b.ward_id = w.id 
+           AND b.status = 0 
+           AND b.is_deleted = false)::BIGINT,
+           
+        CASE 
+            WHEN w.total_beds > 0 THEN 
+                ROUND(
+                    (SELECT COUNT(*) 
+                     FROM beds b 
+                     WHERE b.ward_id = w.id 
+                       AND b.status = 1 
+                       AND b.is_deleted = false)::NUMERIC / w.total_beds * 100, 
+                    2
+                )
             ELSE 0
         END
     FROM wards w
-    WHERE w.is_deleted = false AND w.is_active = true
-    ORDER BY w.name;
+    WHERE w.is_deleted = false 
+      AND w.is_active = true
+    ORDER BY 
+        w.name;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -106,12 +149,31 @@ BEGIN
     RETURN QUERY
     SELECT
         d.dt::DATE,
-        (SELECT COUNT(*) FROM appointments a WHERE a.appointment_date = d.dt AND a.is_deleted = false)::BIGINT,
-        (SELECT COUNT(*) FROM appointments a WHERE a.appointment_date = d.dt AND a.status = 4 AND a.is_deleted = false)::BIGINT, -- Completed
-        (SELECT COUNT(*) FROM appointments a WHERE a.appointment_date = d.dt AND a.status = 5 AND a.is_deleted = false)::BIGINT, -- Cancelled
-        (SELECT COUNT(*) FROM appointments a WHERE a.appointment_date = d.dt AND a.status = 6 AND a.is_deleted = false)::BIGINT  -- NoShow
+        (SELECT COUNT(*) 
+         FROM appointments a 
+         WHERE a.appointment_date = d.dt 
+           AND a.is_deleted = false)::BIGINT,
+           
+        (SELECT COUNT(*) 
+         FROM appointments a 
+         WHERE a.appointment_date = d.dt 
+           AND a.status = 4 
+           AND a.is_deleted = false)::BIGINT, -- Completed
+           
+        (SELECT COUNT(*) 
+         FROM appointments a 
+         WHERE a.appointment_date = d.dt 
+           AND a.status = 5 
+           AND a.is_deleted = false)::BIGINT, -- Cancelled
+           
+        (SELECT COUNT(*) 
+         FROM appointments a 
+         WHERE a.appointment_date = d.dt 
+           AND a.status = 6 
+           AND a.is_deleted = false)::BIGINT  -- NoShow
     FROM generate_series(p_from, p_to, INTERVAL '1 day') AS d(dt)
-    ORDER BY d.dt;
+    ORDER BY 
+        d.dt;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -135,9 +197,12 @@ BEGIN
         COALESCE(SUM(i.balance_amount), 0),
         COUNT(*)::BIGINT
     FROM invoices i
-    WHERE i.invoice_date BETWEEN p_from AND p_to AND i.is_deleted = false
-    GROUP BY DATE_TRUNC('month', i.invoice_date)
-    ORDER BY DATE_TRUNC('month', i.invoice_date);
+    WHERE i.invoice_date BETWEEN p_from AND p_to 
+      AND i.is_deleted = false
+    GROUP BY 
+        DATE_TRUNC('month', i.invoice_date)
+    ORDER BY 
+        DATE_TRUNC('month', i.invoice_date);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -166,7 +231,8 @@ BEGIN
         COUNT(*)::BIGINT
     FROM patients p
     WHERE p.is_deleted = false
-    GROUP BY 1;
+    GROUP BY 
+        1;
 
     -- Gender distribution
     RETURN QUERY
@@ -176,7 +242,8 @@ BEGIN
         COUNT(*)::BIGINT
     FROM patients p
     WHERE p.is_deleted = false
-    GROUP BY p.gender;
+    GROUP BY 
+        p.gender;
 
     -- Blood group distribution
     RETURN QUERY
@@ -186,7 +253,8 @@ BEGIN
         COUNT(*)::BIGINT
     FROM patients p
     WHERE p.is_deleted = false
-    GROUP BY p.blood_group;
+    GROUP BY 
+        p.blood_group;
 END;
 $$ LANGUAGE plpgsql;
 

@@ -18,7 +18,9 @@ public class JwtService : IJwtService
 
     public JwtService(IConfiguration configuration)
     {
-        _secret = configuration["Jwt:Secret"] ?? throw new InvalidOperationException("Jwt:Secret not configured.");
+        _secret =
+            configuration["Jwt:Secret"]
+            ?? throw new InvalidOperationException("Jwt:Secret not configured.");
         _issuer = configuration["Jwt:Issuer"] ?? "HMS-API";
         _audience = configuration["Jwt:Audience"] ?? "HMS-Client";
         _expiryMinutes = int.TryParse(configuration["Jwt:ExpiryMinutes"], out var m) ? m : 60;
@@ -38,7 +40,7 @@ public class JwtService : IJwtService
             new Claim(ClaimTypes.Role, user.Role.ToString()),
             new Claim(ClaimTypes.GivenName, user.FirstName),
             new Claim(ClaimTypes.Surname, user.LastName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
         var token = new JwtSecurityToken(

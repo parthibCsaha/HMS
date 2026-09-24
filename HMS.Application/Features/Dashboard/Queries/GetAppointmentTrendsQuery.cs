@@ -3,4 +3,5 @@ using MediatR;
 
 namespace HMS.Application.Features.Dashboard.Queries;
 
-public record GetAppointmentTrendsQuery(DateTime From, DateTime To) : IRequest<ApiResponse<IEnumerable<AppointmentTrendDto>>>;
+public record GetAppointmentTrendsQuery(DateTime From, DateTime To)
+    : IRequest<ApiResponse<IEnumerable<AppointmentTrendDto>>>;

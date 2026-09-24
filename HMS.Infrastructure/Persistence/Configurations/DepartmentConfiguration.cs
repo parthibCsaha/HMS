@@ -22,7 +22,8 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.HasIndex(e => e.Code).IsUnique();
         builder.HasIndex(e => e.Name).IsUnique();
 
-        builder.HasOne(e => e.HeadDoctor)
+        builder
+            .HasOne(e => e.HeadDoctor)
             .WithMany()
             .HasForeignKey(e => e.HeadDoctorId)
             .OnDelete(DeleteBehavior.SetNull);

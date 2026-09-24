@@ -1,4 +1,4 @@
-﻿using HMS.Application.Features.AuditLogs.Queries;
+using HMS.Application.Features.AuditLogs.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,23 +12,20 @@ public class AuditLogsController(ISender _mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> Get(
-        [FromQuery] int pageNumber = 1, 
+        [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 20,
-        [FromQuery] Guid? userId = null, 
+        [FromQuery] Guid? userId = null,
         [FromQuery] string? action = null,
-        [FromQuery] string? entityName = null, 
+        [FromQuery] string? entityName = null,
         [FromQuery] DateTime? from = null,
-        [FromQuery] DateTime? to = null, 
-        CancellationToken ct = default)
+        [FromQuery] DateTime? to = null,
+        CancellationToken ct = default
+    )
     {
-        try
-        {
-            var result = await _mediator.Send(new GetAuditLogsQuery(pageNumber, pageSize, userId, action, entityName, from, to), ct);
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var result = await _mediator.Send(
+            new GetAuditLogsQuery(pageNumber, pageSize, userId, action, entityName, from, to),
+            ct
+        );
+        return Ok(result);
     }
 }

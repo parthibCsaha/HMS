@@ -24,17 +24,20 @@ public class VitalSignsConfiguration : IEntityTypeConfiguration<VitalSigns>
 
         builder.HasIndex(e => new { e.PatientId, e.RecordedAt });
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany(p => p.VitalSigns)
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Appointment)
+        builder
+            .HasOne(e => e.Appointment)
             .WithMany()
             .HasForeignKey(e => e.AppointmentId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(e => e.Admission)
+        builder
+            .HasOne(e => e.Admission)
             .WithMany()
             .HasForeignKey(e => e.AdmissionId)
             .OnDelete(DeleteBehavior.SetNull);

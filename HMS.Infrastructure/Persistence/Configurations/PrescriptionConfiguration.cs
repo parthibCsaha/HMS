@@ -19,17 +19,20 @@ public class PrescriptionConfiguration : IEntityTypeConfiguration<Prescription>
         builder.HasIndex(e => e.PrescriptionCode).IsUnique();
         builder.HasIndex(e => e.PatientId);
 
-        builder.HasOne(e => e.MedicalRecord)
+        builder
+            .HasOne(e => e.MedicalRecord)
             .WithMany(mr => mr.Prescriptions)
             .HasForeignKey(e => e.MedicalRecordId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany(p => p.Prescriptions)
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Doctor)
+        builder
+            .HasOne(e => e.Doctor)
             .WithMany(d => d.Prescriptions)
             .HasForeignKey(e => e.DoctorId)
             .OnDelete(DeleteBehavior.Restrict);

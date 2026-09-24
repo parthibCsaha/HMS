@@ -21,22 +21,26 @@ public class LabOrderConfiguration : IEntityTypeConfiguration<LabOrder>
         builder.HasIndex(e => e.PatientId);
         builder.HasIndex(e => e.Status);
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany(p => p.LabOrders)
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.OrderingDoctor)
+        builder
+            .HasOne(e => e.OrderingDoctor)
             .WithMany(d => d.LabOrders)
             .HasForeignKey(e => e.OrderingDoctorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.MedicalRecord)
+        builder
+            .HasOne(e => e.MedicalRecord)
             .WithMany(mr => mr.LabOrders)
             .HasForeignKey(e => e.MedicalRecordId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(e => e.Admission)
+        builder
+            .HasOne(e => e.Admission)
             .WithMany()
             .HasForeignKey(e => e.AdmissionId)
             .OnDelete(DeleteBehavior.SetNull);

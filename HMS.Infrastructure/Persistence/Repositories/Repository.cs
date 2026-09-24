@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HMS.Infrastructure.Persistence.Repositories;
 
-public class Repository<T>(AppDbContext context) : IRepository<T> where T : BaseEntity
+public class Repository<T>(AppDbContext context) : IRepository<T>
+    where T : BaseEntity
 {
     protected readonly AppDbContext Context = context;
     protected readonly DbSet<T> DbSet = context.Set<T>();

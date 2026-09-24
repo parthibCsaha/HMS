@@ -5,5 +5,9 @@ using MediatR;
 
 namespace HMS.Application.Features.LabOrders.Queries;
 
-public record GetLabOrdersQuery(int PageNumber = 1, int PageSize = 10, Guid? PatientId = null, LabTestStatus? Status = null)
-    : IRequest<ApiResponse<PaginatedResponse<LabOrderListItemDto>>>;
+public record GetLabOrdersQuery(
+    int PageNumber = 1,
+    int PageSize = 10,
+    Guid? PatientId = null,
+    LabTestStatus? Status = null
+) : IRequest<ApiResponse<PaginatedResponse<LabOrderListItemDto>>>;

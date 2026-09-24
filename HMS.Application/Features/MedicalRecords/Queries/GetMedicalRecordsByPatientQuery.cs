@@ -4,4 +4,5 @@ using MediatR;
 
 namespace HMS.Application.Features.MedicalRecords.Queries;
 
-public record GetMedicalRecordsByPatientQuery(Guid PatientId, int PageNumber = 1, int PageSize = 10) : IRequest<ApiResponse<PaginatedResponse<MedicalRecordListItemDto>>>;
+public record GetMedicalRecordsByPatientQuery(Guid PatientId, int PageNumber = 1, int PageSize = 10)
+    : IRequest<ApiResponse<PaginatedResponse<MedicalRecordListItemDto>>>;

@@ -16,7 +16,18 @@ namespace HMS.Application.Common.Models
         public bool HasPreviousPage => PageNumber > 1;
         public bool HasNextPage => PageNumber < TotalPages;
 
-        public static PaginatedResponse<T> Create(IEnumerable<T> data, int pageNumber, int pageSize, int totalCount)
-            => new() { Data = data, PageNumber = pageNumber, PageSize = pageSize, TotalCount = totalCount };
+        public static PaginatedResponse<T> Create(
+            IEnumerable<T> data,
+            int pageNumber,
+            int pageSize,
+            int totalCount
+        ) =>
+            new()
+            {
+                Data = data,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+            };
     }
 }

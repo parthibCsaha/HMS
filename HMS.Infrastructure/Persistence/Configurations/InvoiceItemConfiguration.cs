@@ -21,7 +21,8 @@ public class InvoiceItemConfiguration : IEntityTypeConfiguration<InvoiceItem>
         builder.Property(e => e.DiscountAmount).HasPrecision(18, 2);
         builder.Property(e => e.TotalPrice).HasPrecision(18, 2);
 
-        builder.HasOne(e => e.Invoice)
+        builder
+            .HasOne(e => e.Invoice)
             .WithMany(i => i.Items)
             .HasForeignKey(e => e.InvoiceId)
             .OnDelete(DeleteBehavior.Cascade);

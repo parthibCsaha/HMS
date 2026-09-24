@@ -4,4 +4,9 @@ using MediatR;
 
 namespace HMS.Application.Features.Admissions.Queries;
 
-public record GetAdmissionsQuery(int PageNumber = 1, int PageSize = 10, Guid? PatientId = null, bool? IsActive = null) : IRequest<ApiResponse<PaginatedResponse<AdmissionListItemDto>>>;
+public record GetAdmissionsQuery(
+    int PageNumber = 1,
+    int PageSize = 10,
+    Guid? PatientId = null,
+    bool? IsActive = null
+) : IRequest<ApiResponse<PaginatedResponse<AdmissionListItemDto>>>;

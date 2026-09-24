@@ -4,4 +4,5 @@ using MediatR;
 
 namespace HMS.Application.Features.Invoices.Queries;
 
-public record GetInvoicesQuery(int PageNumber = 1, int PageSize = 10, Guid? PatientId = null) : IRequest<ApiResponse<PaginatedResponse<InvoiceListItemDto>>>;
+public record GetInvoicesQuery(int PageNumber = 1, int PageSize = 10, Guid? PatientId = null)
+    : IRequest<ApiResponse<PaginatedResponse<InvoiceListItemDto>>>;

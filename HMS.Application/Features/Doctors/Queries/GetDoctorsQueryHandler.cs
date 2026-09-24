@@ -1,12 +1,42 @@
-﻿using HMS.Application.Common.Models;
+using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Models;
 using HMS.Application.Features.Doctors.DTOs;
-using HMS.Application.Features.Doctors.Services;
 using MediatR;
 
 namespace HMS.Application.Features.Doctors.Queries;
 
-public class GetDoctorsQueryHandler(IDoctorService svc) : IRequestHandler<GetDoctorsQuery, ApiResponse<PaginatedResponse<DoctorListItemDto>>>
+public class GetDoctorsQueryHandler(IDoctorRepository doctorRepo)
+    : IRequestHandler<GetDoctorsQuery, ApiResponse<PaginatedResponse<DoctorListItemDto>>>
 {
-    public async Task<ApiResponse<PaginatedResponse<DoctorListItemDto>>> Handle(GetDoctorsQuery r, CancellationToken ct)
-        => await svc.GetDoctorsAsync(new PaginationQuery { PageNumber = r.PageNumber, PageSize = r.PageSize, SearchTerm = r.SearchTerm, SortBy = r.SortBy, IsDescending = r.IsDescending }, ct);
+    public async Task<ApiResponse<PaginatedResponse<DoctorListItemDto>>> Handle(
+        GetDoctorsQuery request,
+        CancellationToken ct
+    )
+    {
+        var (items, total) = await doctorRepo.GetPagedAsync(
+            new PaginationQuery { PageNumber = request.PageNumber, PageSize = request.PageSize, SearchTerm = request.SearchTerm },
+            ct
+        );
+
+        var dtos = items.Select(doctor => new DoctorListItemDto(
+            doctor.Id,
+            doctor.DoctorCode,
+            doctor.User.FirstName,
+            doctor.User.LastName,
+            doctor.User.Email,
+            doctor.Specialization,
+            doctor.Department.Name,
+            doctor.ConsultationFee,
+            doctor.IsAvailable,
+            doctor.ExperienceYears
+        ));
+
+        var response = PaginatedResponse<DoctorListItemDto>.Create(
+            dtos,
+            request.PageNumber,
+            request.PageSize,
+            total
+        );
+        return ApiResponse<PaginatedResponse<DoctorListItemDto>>.Success(response);
+    }
 }

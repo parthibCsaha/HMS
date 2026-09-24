@@ -10,18 +10,34 @@ public class RecordVitalSignsCommandHandler(IVitalSignsRepository repo, IUnitOfW
 {
     public async Task<ApiResponse<Guid>> Handle(RecordVitalSignsCommand cmd, CancellationToken ct)
     {
-        var bmi = (cmd.WeightKg.HasValue && cmd.HeightCm.HasValue && cmd.HeightCm > 0)
-            ? Math.Round(cmd.WeightKg.Value / ((cmd.HeightCm.Value / 100m) * (cmd.HeightCm.Value / 100m)), 2) : cmd.BloodGlucoseMgDl;
+        var bmi =
+            (cmd.WeightKg.HasValue && cmd.HeightCm.HasValue && cmd.HeightCm > 0)
+                ? Math.Round(
+                    cmd.WeightKg.Value
+                        / ((cmd.HeightCm.Value / 100m) * (cmd.HeightCm.Value / 100m)),
+                    2
+                )
+                : cmd.BloodGlucoseMgDl;
         var vs = new Domain.Entities.VitalSigns
         {
-            PatientId = cmd.PatientId, AppointmentId = cmd.AppointmentId, AdmissionId = cmd.AdmissionId,
-            RecordedAt = DateTime.UtcNow, TemperatureCelsius = cmd.TemperatureCelsius,
-            HeartRateBpm = cmd.HeartRateBpm, RespiratoryRatePerMin = cmd.RespiratoryRatePerMin,
-            BloodPressure = cmd.BloodPressure, OxygenSaturationPercent = cmd.OxygenSaturationPercent,
-            WeightKg = cmd.WeightKg, HeightCm = cmd.HeightCm, BmiValue = bmi,
-            BloodGlucoseMgDl = cmd.BloodGlucoseMgDl, PainLevel = cmd.PainLevel, Notes = cmd.Notes
+            PatientId = cmd.PatientId,
+            AppointmentId = cmd.AppointmentId,
+            AdmissionId = cmd.AdmissionId,
+            RecordedAt = DateTime.UtcNow,
+            TemperatureCelsius = cmd.TemperatureCelsius,
+            HeartRateBpm = cmd.HeartRateBpm,
+            RespiratoryRatePerMin = cmd.RespiratoryRatePerMin,
+            BloodPressure = cmd.BloodPressure,
+            OxygenSaturationPercent = cmd.OxygenSaturationPercent,
+            WeightKg = cmd.WeightKg,
+            HeightCm = cmd.HeightCm,
+            BmiValue = bmi,
+            BloodGlucoseMgDl = cmd.BloodGlucoseMgDl,
+            PainLevel = cmd.PainLevel,
+            Notes = cmd.Notes,
         };
-        await repo.AddAsync(vs, ct); await uow.SaveChangesAsync(ct);
+        await repo.AddAsync(vs, ct);
+        await uow.SaveChangesAsync(ct);
         return ApiResponse<Guid>.Success(vs.Id, "Vital signs recorded.");
     }
 }

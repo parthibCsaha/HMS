@@ -13,7 +13,8 @@ public class CodeGeneratorService(IDapperContext dapperContext) : ICodeGenerator
 
         var nextNumber = await connection.ExecuteScalarAsync<int>(
             "SELECT * FROM sp_get_next_code(@Prefix)",
-            new { Prefix = prefix });
+            new { Prefix = prefix }
+        );
 
         return $"{prefix}-{nextNumber:D5}";
     }

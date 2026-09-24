@@ -1,11 +1,23 @@
-﻿using HMS.Application.Common.Models;
-using HMS.Application.Features.Medications.Services;
+using HMS.Application.Common.Exceptions;
+using HMS.Application.Common.Interfaces;
+using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Models;
 using MediatR;
 
 namespace HMS.Application.Features.Medications.Commands;
 
-public class DeleteMedicationCommandHandler(IMedicationService svc) : IRequestHandler<DeleteMedicationCommand, ApiResponse>
+public class DeleteMedicationCommandHandler(
+    IMedicationRepository repo,
+    IUnitOfWork uow
+) : IRequestHandler<DeleteMedicationCommand, ApiResponse>
 {
-    public async Task<ApiResponse> Handle(DeleteMedicationCommand r, CancellationToken ct)
-        => await svc.DeleteAsync(r.Id, ct);
+    public async Task<ApiResponse> Handle(DeleteMedicationCommand cmd, CancellationToken ct)
+    {
+        var med = await repo.GetByIdAsync(cmd.Id, ct) ?? throw new NotFoundException("Medication", cmd.Id);
+
+        repo.SoftDelete(med);
+        await uow.SaveChangesAsync(ct);
+
+        return ApiResponse.Success("Medication deleted.");
+    }
 }

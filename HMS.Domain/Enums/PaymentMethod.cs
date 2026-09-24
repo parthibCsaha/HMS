@@ -8,7 +8,12 @@ namespace HMS.Domain.Enums
 {
     public enum PaymentMethod
     {
-        Cash = 1, CreditCard = 2, DebitCard = 3,
-        Insurance = 4, OnlineTransfer = 5, Cheque = 6, MobileWallet = 7
+        Cash = 1,
+        CreditCard = 2,
+        DebitCard = 3,
+        Insurance = 4,
+        OnlineTransfer = 5,
+        Cheque = 6,
+        MobileWallet = 7,
     }
 }

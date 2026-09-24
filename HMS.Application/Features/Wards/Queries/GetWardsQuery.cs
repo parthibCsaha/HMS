@@ -4,4 +4,5 @@ using MediatR;
 
 namespace HMS.Application.Features.Wards.Queries;
 
-public record GetWardsQuery(int PageNumber = 1, int PageSize = 10, string? SearchTerm = null) : IRequest<ApiResponse<PaginatedResponse<WardListItemDto>>>;
+public record GetWardsQuery(int PageNumber = 1, int PageSize = 10, string? SearchTerm = null)
+    : IRequest<ApiResponse<PaginatedResponse<WardListItemDto>>>;

@@ -1,16 +1,16 @@
-using HMS.Domain.Common;
-using HMS.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HMS.Domain.Common;
+using HMS.Domain.Enums;
 
 namespace HMS.Domain.Entities
 {
     public class Invoice : BaseEntity
     {
-        public string InvoiceNumber { get; set; } = string.Empty;   // INV-00001
+        public string InvoiceNumber { get; set; } = string.Empty; // INV-00001
         public Guid PatientId { get; set; }
         public Guid? AppointmentId { get; set; }
         public Guid? AdmissionId { get; set; }
@@ -31,6 +31,7 @@ namespace HMS.Domain.Entities
         public string? Notes { get; set; }
         public string? InsuranceClaimNumber { get; set; }
         public decimal? InsuranceCoveredAmount { get; set; }
+
         // Navigation Properties
         public Patient Patient { get; set; } = null!;
         public Appointment? Appointment { get; set; }

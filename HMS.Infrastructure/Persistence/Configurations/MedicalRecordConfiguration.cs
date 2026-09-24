@@ -30,22 +30,26 @@ public class MedicalRecordConfiguration : IEntityTypeConfiguration<MedicalRecord
         builder.HasIndex(e => e.RecordCode).IsUnique();
         builder.HasIndex(e => e.PatientId);
 
-        builder.HasOne(e => e.Patient)
+        builder
+            .HasOne(e => e.Patient)
             .WithMany(p => p.MedicalRecords)
             .HasForeignKey(e => e.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Doctor)
+        builder
+            .HasOne(e => e.Doctor)
             .WithMany(d => d.MedicalRecords)
             .HasForeignKey(e => e.DoctorId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(e => e.Appointment)
+        builder
+            .HasOne(e => e.Appointment)
             .WithMany()
             .HasForeignKey(e => e.AppointmentId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(e => e.Admission)
+        builder
+            .HasOne(e => e.Admission)
             .WithMany()
             .HasForeignKey(e => e.AdmissionId)
             .OnDelete(DeleteBehavior.SetNull);

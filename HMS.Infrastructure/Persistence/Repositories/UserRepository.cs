@@ -16,18 +16,29 @@ public class UserRepository(AppDbContext context) : Repository<User>(context), I
         return await Context.Users.AnyAsync(u => u.Email == email && !u.IsDeleted, ct);
     }
 
-    public async Task UpdateRefreshTokenAsync(Guid userId, string? refreshToken, DateTime? expiry, CancellationToken ct = default)
+    public async Task UpdateRefreshTokenAsync(
+        Guid userId,
+        string? refreshToken,
+        DateTime? expiry,
+        CancellationToken ct = default
+    )
     {
         var user = await GetByIdAsync(userId, ct);
-        if (user is null) return;
+        if (user is null)
+            return;
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiry = expiry;
         Context.Users.Update(user);
     }
 
-    public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct = default)
+    public async Task<User?> GetByRefreshTokenAsync(
+        string refreshToken,
+        CancellationToken ct = default
+    )
     {
         return await Context.Users.FirstOrDefaultAsync(
-            u => u.RefreshToken == refreshToken && !u.IsDeleted, ct);
+            u => u.RefreshToken == refreshToken && !u.IsDeleted,
+            ct
+        );
     }
 }

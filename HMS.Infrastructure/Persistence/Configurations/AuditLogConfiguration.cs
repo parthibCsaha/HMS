@@ -28,7 +28,8 @@ public class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
         builder.HasIndex(e => e.LoggedAt);
         builder.HasIndex(e => e.UserId);
 
-        builder.HasOne(e => e.User)
+        builder
+            .HasOne(e => e.User)
             .WithMany()
             .HasForeignKey(e => e.UserId)
             .OnDelete(DeleteBehavior.SetNull);

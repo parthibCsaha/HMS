@@ -12,15 +12,20 @@ namespace HMS.API.Controllers;
 public class VitalSignsController(ISender mediator) : ControllerBase
 {
     [HttpGet("patient/{patientId:guid}")]
-    public async Task<IActionResult> GetByPatient(Guid patientId, [FromQuery] DateTime? from = null,
-        [FromQuery] DateTime? to = null, CancellationToken ct = default)
-        => Ok(await mediator.Send(new GetVitalSignsQuery(patientId, from, to), ct));
+    public async Task<IActionResult> GetByPatient(
+        Guid patientId,
+        [FromQuery] DateTime? from = null,
+        [FromQuery] DateTime? to = null,
+        CancellationToken ct = default
+    ) => Ok(await mediator.Send(new GetVitalSignsQuery(patientId, from, to), ct));
 
     [HttpGet("patient/{patientId:guid}/latest")]
-    public async Task<IActionResult> GetLatest(Guid patientId, CancellationToken ct)
-        => Ok(await mediator.Send(new GetLatestVitalsQuery(patientId), ct));
+    public async Task<IActionResult> GetLatest(Guid patientId, CancellationToken ct) =>
+        Ok(await mediator.Send(new GetLatestVitalsQuery(patientId), ct));
 
     [HttpPost]
-    public async Task<IActionResult> Record([FromBody] RecordVitalSignsCommand cmd, CancellationToken ct)
-        => Ok(await mediator.Send(cmd, ct));
+    public async Task<IActionResult> Record(
+        [FromBody] RecordVitalSignsCommand cmd,
+        CancellationToken ct
+    ) => Ok(await mediator.Send(cmd, ct));
 }

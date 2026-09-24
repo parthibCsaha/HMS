@@ -19,7 +19,8 @@ public class WardConfiguration : IEntityTypeConfiguration<Ward>
         builder.Property(e => e.ChargePerDay).HasPrecision(18, 2);
         builder.Property(e => e.Location).HasMaxLength(200);
 
-        builder.HasOne(e => e.Department)
+        builder
+            .HasOne(e => e.Department)
             .WithMany(d => d.Wards)
             .HasForeignKey(e => e.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);

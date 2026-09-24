@@ -4,4 +4,5 @@ using MediatR;
 
 namespace HMS.Application.Features.SystemSettings.Queries;
 
-public record GetSettingsByCategoryQuery(string Category) : IRequest<ApiResponse<IEnumerable<SystemSettingDto>>>;
+public record GetSettingsByCategoryQuery(string Category)
+    : IRequest<ApiResponse<IEnumerable<SystemSettingDto>>>;

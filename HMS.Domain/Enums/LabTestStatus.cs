@@ -8,7 +8,12 @@ namespace HMS.Domain.Enums
 {
     public enum LabTestStatus
     {
-        Pending = 1, SampleCollected = 2, InProgress = 3,
-        Completed = 4, Verified = 5, Cancelled = 6, Rejected = 7
+        Pending = 1,
+        SampleCollected = 2,
+        InProgress = 3,
+        Completed = 4,
+        Verified = 5,
+        Cancelled = 6,
+        Rejected = 7,
     }
 }
