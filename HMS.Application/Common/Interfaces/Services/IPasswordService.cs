@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace HMS.Application.Common.Interfaces.Services;
 
-namespace HMS.Application.Common.Interfaces.Services
+public interface IPasswordService
 {
-    public interface IPasswordService
-    {
-        string HashPassword(string password);
-        bool VerifyPassword(string password, string hash);
-        bool IsStrongPassword(string password);
-    }
+    string HashPassword(string password);
+    bool VerifyPassword(string password, string hash);
+    bool IsStrongPassword(string password);
 }

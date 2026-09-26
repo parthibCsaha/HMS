@@ -3,4 +3,7 @@ using MediatR;
 
 namespace HMS.Application.Features.Auth.Commands.Logout;
 
-public record LogoutCommand(Guid UserId) : IRequest<ApiResponse>;
+/// <summary>
+/// UserId is resolved internally from ICurrentUserService — no need to pass it from the controller.
+/// </summary>
+public record LogoutCommand : IRequest<ApiResponse>;

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
 using HMS.Application.Common.Interfaces.Services;
@@ -22,7 +23,8 @@ public static class DependencyInjection
     )
     {
         // ──── EF Core ────
-        services.AddSingleton<AuditableEntityInterceptor>();
+        // Scoped because it depends on ICurrentUserService (scoped).
+        services.AddScoped<AuditableEntityInterceptor>();
 
         services.AddDbContext<AppDbContext>(
             (sp, options) =>
@@ -69,6 +71,7 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordService, PasswordService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<ICodeGeneratorService, CodeGeneratorService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         // ──── Authentication ────
         services.AddHttpContextAccessor();
@@ -97,6 +100,37 @@ public static class DependencyInjection
             });
 
         services.AddAuthorization();
+
+        // ──── Health Checks ────
+        services
+            .AddHealthChecks()
+            .AddNpgSql(
+                configuration.GetConnectionString("DefaultConnection")!,
+                name: "postgresql",
+                tags: ["db", "ready"]
+            );
+
+        // ──── Rate Limiting ────
+        services.AddRateLimiter(options =>
+        {
+            options.RejectionStatusCode = 429;
+
+            // Fixed window: 10 requests per 1 minute for auth endpoints.
+            options.AddFixedWindowLimiter("auth", limiterOptions =>
+            {
+                limiterOptions.PermitLimit = 10;
+                limiterOptions.Window = TimeSpan.FromMinutes(1);
+                limiterOptions.QueueLimit = 0;
+            });
+
+            // Global policy: 100 requests per minute per IP.
+            options.AddFixedWindowLimiter("global", limiterOptions =>
+            {
+                limiterOptions.PermitLimit = 100;
+                limiterOptions.Window = TimeSpan.FromMinutes(1);
+                limiterOptions.QueueLimit = 5;
+            });
+        });
 
         return services;
     }

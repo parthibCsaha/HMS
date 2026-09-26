@@ -1,8 +1,7 @@
-using HMS.Application.Common.Interfaces.Services;
-using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Interfaces.Services;
 using HMS.Application.Common.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -14,12 +13,14 @@ public class ChangePasswordCommandHandler(
     IPasswordService passwordService,
     IUnitOfWork unitOfWork,
     ILogger<ChangePasswordCommandHandler> logger,
-    HMS.Application.Common.Interfaces.Services.ICurrentUserService currentUser
+    ICurrentUserService currentUser
 ) : IRequestHandler<ChangePasswordCommand, ApiResponse>
 {
     public async Task<ApiResponse> Handle(ChangePasswordCommand command, CancellationToken ct)
     {
-        if (currentUser.UserId == null) throw new UnauthorizedException("User not authenticated");
+        if (currentUser.UserId is null)
+            throw new UnauthorizedException("User not authenticated.");
+
         var userId = currentUser.UserId.Value;
         var user =
             await userRepository.GetByIdAsync(userId, ct)
@@ -38,6 +39,11 @@ public class ChangePasswordCommandHandler(
         }
 
         user.PasswordHash = passwordService.HashPassword(command.NewPassword);
+
+        // Invalidate refresh token so all existing sessions require re-login.
+        user.RefreshToken = null;
+        user.RefreshTokenExpiry = null;
+
         userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(ct);
 
@@ -45,4 +51,3 @@ public class ChangePasswordCommandHandler(
         return ApiResponse.Success("Password changed successfully.");
     }
 }
-

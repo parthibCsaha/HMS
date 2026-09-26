@@ -1,8 +1,7 @@
-using HMS.Application.Common.Interfaces.Services;
-using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Interfaces.Services;
 using HMS.Application.Common.Models;
 using HMS.Application.Features.Auth.Commands.DTOs;
 using MediatR;
@@ -20,20 +19,21 @@ public class LoginCommandHandler(
 {
     public async Task<ApiResponse<AuthResponseDto>> Handle(LoginCommand command, CancellationToken ct)
     {
-        var user =
-            await userRepository.GetByEmailAsync(command.Email, ct)
-            ?? throw new NotFoundException("User", command.Email);
+        // Generic error used for BOTH "not found" and "wrong password"
+        // to prevent user-enumeration attacks.
+        const string genericError = "Invalid email or password.";
+
+        var user = await userRepository.GetByEmailAsync(command.Email, ct);
+        if (user is null || !passwordService.VerifyPassword(command.Password, user.PasswordHash))
+        {
+            throw new UnauthorizedException(genericError);
+        }
 
         if (!user.IsActive)
         {
             throw new UnauthorizedException(
                 "Your account has been deactivated. Please contact admin."
             );
-        }
-
-        if (!passwordService.VerifyPassword(command.Password, user.PasswordHash))
-        {
-            throw new UnauthorizedException("Invalid email or password.");
         }
 
         user.LastLoginAt = DateTime.UtcNow;
@@ -62,4 +62,3 @@ public class LoginCommandHandler(
         );
     }
 }
-

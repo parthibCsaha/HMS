@@ -59,9 +59,4 @@ public class JwtService : IJwtService
         var randomBytes = RandomNumberGenerator.GetBytes(64);
         return Convert.ToBase64String(randomBytes);
     }
-
-    public bool ValidateRefreshToken(string refreshToken)
-    {
-        return !string.IsNullOrWhiteSpace(refreshToken);
-    }
 }

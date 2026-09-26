@@ -1,6 +1,7 @@
 using HMS.API.Middleware;
 using HMS.Application;
 using HMS.Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -81,12 +82,21 @@ builder.Services.AddSwaggerGen(c =>
     );
 });
 
-// ──── CORS ────
+// ──── CORS (from configuration) ────
+var allowedOrigins = builder.Configuration
+    .GetValue<string>("Cors:AllowedOrigins")?
+    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    ?? [];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-        "AllowAll",
-        policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+        "DefaultCors",
+        policy => policy
+            .WithOrigins(allowedOrigins)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
     );
 });
 
@@ -102,9 +112,23 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+app.UseCors("DefaultCors");
+
+app.UseRateLimiter();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+// ──── Health Checks ────
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready"),
+});
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = _ => false, // No checks — just confirms the process is alive.
+});
+
 app.MapControllers();
 
 app.Run();

@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using HMS.Application.Features.Auth.Commands.ChangePassword;
 using HMS.Application.Features.Auth.Commands.Login;
 using HMS.Application.Features.Auth.Commands.Logout;
@@ -8,12 +7,15 @@ using HMS.Application.Features.Auth.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace HMS.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(ISender _mediator) : ControllerBase
+[EnableRateLimiting("auth")]
+public class AuthController(ISender mediator) : ControllerBase
+
 {
     [AllowAnonymous]
     [HttpPost("register")]
@@ -22,7 +24,7 @@ public class AuthController(ISender _mediator) : ControllerBase
         CancellationToken ct
     )
     {
-        var result = await _mediator.Send(command, ct);
+        var result = await mediator.Send(command, ct);
         return Ok(result);
     }
 
@@ -30,7 +32,7 @@ public class AuthController(ISender _mediator) : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken ct)
     {
-        var result = await _mediator.Send(command, ct);
+        var result = await mediator.Send(command, ct);
         return Ok(result);
     }
 
@@ -41,7 +43,7 @@ public class AuthController(ISender _mediator) : ControllerBase
         CancellationToken ct
     )
     {
-        var result = await _mediator.Send(command, ct);
+        var result = await mediator.Send(command, ct);
         return Ok(result);
     }
 
@@ -49,8 +51,8 @@ public class AuthController(ISender _mediator) : ControllerBase
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(CancellationToken ct)
     {
-        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        return Ok(await _mediator.Send(new LogoutCommand(userId), ct));
+        // UserId is resolved from JWT inside ICurrentUserService in the handler.
+        return Ok(await mediator.Send(new LogoutCommand(), ct));
     }
 
     [Authorize]
@@ -60,16 +62,15 @@ public class AuthController(ISender _mediator) : ControllerBase
         CancellationToken ct
     )
     {
-        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var result = await _mediator.Send(command, ct);
-        return Ok(result);
+        // UserId is resolved from JWT inside ICurrentUserService in the handler.
+        return Ok(await mediator.Send(command, ct));
     }
 
     [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> GetCurrentUser(CancellationToken ct)
     {
-        var result = await _mediator.Send(new GetCurrentUserQuery(), ct);
+        var result = await mediator.Send(new GetCurrentUserQuery(), ct);
         return Ok(result);
     }
 }

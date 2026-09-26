@@ -1,8 +1,7 @@
-using HMS.Application.Common.Interfaces.Services;
-using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Interfaces.Services;
 using HMS.Application.Common.Models;
 using HMS.Application.Features.Auth.Commands.DTOs;
 using HMS.Domain.Entities;
@@ -73,4 +72,3 @@ public class RegisterCommandHandler(
         );
     }
 }
-
