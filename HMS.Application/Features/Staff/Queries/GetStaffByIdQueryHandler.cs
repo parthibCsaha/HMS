@@ -7,8 +7,7 @@ using MediatR;
 namespace HMS.Application.Features.Staff.Queries;
 
 public class GetStaffByIdQueryHandler(
-    IStaffRepository staffRepo,
-    IUserRepository userRepo
+    IStaffRepository staffRepo
 ) : IRequestHandler<GetStaffByIdQuery, ApiResponse<StaffDetailDto>>
 {
     public async Task<ApiResponse<StaffDetailDto>> Handle(
@@ -17,13 +16,10 @@ public class GetStaffByIdQueryHandler(
     )
     {
         var staff =
-            await staffRepo.GetByIdAsync(request.Id, ct) ?? throw new NotFoundException("Staff", request.Id);
+            await staffRepo.GetByIdAsync(request.Id, ct)
+            ?? throw new NotFoundException("Staff", request.Id);
 
-        if (staff.User is null)
-        {
-            staff.User = (await userRepo.GetByIdAsync(staff.UserId, ct))!;
-        }
-
+        // User, Department, Ward are now included by the repository — no N+1 workaround needed.
         var dto = new StaffDetailDto(
             staff.Id,
             staff.UserId,

@@ -12,6 +12,7 @@ namespace HMS.API.Controllers;
 public class PatientsController(ISender mediator) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles = "Admin,Doctor,Nurse,Receptionist")]
     public async Task<IActionResult> GetPatients(
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10,
@@ -28,6 +29,7 @@ public class PatientsController(ISender mediator) : ControllerBase
         );
 
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = "Admin,Doctor,Nurse,Receptionist")]
     public async Task<IActionResult> GetPatientById(Guid id, CancellationToken ct) =>
         Ok(await mediator.Send(new GetPatientByIdQuery(id), ct));
 

@@ -7,13 +7,22 @@ namespace HMS.Infrastructure.Persistence.Repositories;
 
 public class StaffRepository(AppDbContext context) : Repository<Staff>(context), IStaffRepository
 {
+    public override async Task<Staff?> GetByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        return await Context
+            .Staff.Include(s => s.User)
+            .Include(s => s.Department)
+            .Include(s => s.Ward)
+            .FirstOrDefaultAsync(s => s.Id == id, ct);
+    }
+
     public async Task<Staff?> GetByUserIdAsync(Guid userId, CancellationToken ct = default)
     {
         return await Context
             .Staff.Include(s => s.User)
             .Include(s => s.Department)
             .Include(s => s.Ward)
-            .FirstOrDefaultAsync(s => s.UserId == userId && !s.IsDeleted, ct);
+            .FirstOrDefaultAsync(s => s.UserId == userId, ct);
     }
 
     public async Task<(IEnumerable<Staff> Items, int TotalCount)> GetPagedAsync(
@@ -24,7 +33,6 @@ public class StaffRepository(AppDbContext context) : Repository<Staff>(context),
         var q = Context
             .Staff.Include(s => s.User)
             .Include(s => s.Department)
-            .Where(s => !s.IsDeleted)
             .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))

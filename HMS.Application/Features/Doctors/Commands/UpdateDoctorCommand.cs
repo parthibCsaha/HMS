@@ -1,4 +1,4 @@
-﻿using HMS.Application.Common.Models;
+using HMS.Application.Common.Models;
 using MediatR;
 
 namespace HMS.Application.Features.Doctors.Commands;
@@ -13,7 +13,7 @@ public record UpdateDoctorCommand(
     decimal ConsultationFee,
     bool IsAvailable,
     string? Biography,
-    string? AvailableDays,
+    List<DayOfWeek> AvailableDays,
     TimeSpan? ConsultationStartTime,
     TimeSpan? ConsultationEndTime,
     int SlotDurationMinutes = 15

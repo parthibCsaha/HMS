@@ -1,30 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HMS.Domain.Common;
 
-namespace HMS.Domain.Entities
-{
-    public class Prescription : BaseEntity
-    {
-        public string PrescriptionCode { get; set; } = string.Empty; // RX-00001
-        public Guid MedicalRecordId { get; set; }
-        public Guid PatientId { get; set; }
-        public Guid DoctorId { get; set; }
-        public DateTime IssuedDate { get; set; }
-        public DateTime? ExpiryDate { get; set; }
-        public string? Instructions { get; set; }
-        public string? Notes { get; set; }
-        public bool IsDispensed { get; set; } = false;
-        public DateTime? DispensedAt { get; set; }
-        public Guid? DispensedBy { get; set; }
+namespace HMS.Domain.Entities;
 
-        // Navigation Properties
-        public MedicalRecord MedicalRecord { get; set; } = null!;
-        public Patient Patient { get; set; } = null!;
-        public Doctor Doctor { get; set; } = null!;
-        public ICollection<PrescriptionItem> Items { get; set; } = [];
+public class Prescription : BaseEntity
+{
+    public string PrescriptionCode { get; set; } = string.Empty; // RX-00001
+    public Guid MedicalRecordId { get; set; }
+    public Guid PatientId { get; set; }
+    public Guid DoctorId { get; set; }
+    public DateTime IssuedDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+    public string? Instructions { get; set; }
+    public string? Notes { get; set; }
+    public bool IsDispensed { get; set; }
+    public DateTime? DispensedAt { get; set; }
+    public Guid? DispensedBy { get; set; }
+
+    // Navigation Properties
+    public MedicalRecord MedicalRecord { get; set; } = null!;
+    public Patient Patient { get; set; } = null!;
+    public Doctor Doctor { get; set; } = null!;
+    public ICollection<PrescriptionItem> Items { get; set; } = [];
+
+    // ──── Domain Methods ────
+
+    public void Dispense(Guid dispensedByUserId)
+    {
+        if (IsDispensed)
+            throw new InvalidOperationException("Prescription has already been dispensed.");
+
+        IsDispensed = true;
+        DispensedAt = DateTime.UtcNow;
+        DispensedBy = dispensedByUserId;
     }
 }

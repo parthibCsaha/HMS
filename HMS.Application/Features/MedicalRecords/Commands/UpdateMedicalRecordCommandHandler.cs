@@ -26,6 +26,7 @@ public class UpdateMedicalRecordCommandHandler(
 
         repo.Update(record);
         await uow.SaveChangesAsync(ct);
+
         return ApiResponse.Success("Medical record updated.");
     }
 }

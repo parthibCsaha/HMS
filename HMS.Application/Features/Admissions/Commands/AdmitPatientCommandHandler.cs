@@ -1,8 +1,7 @@
-using HMS.Application.Common.Interfaces.Services;
-using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Interfaces.Services;
 using HMS.Application.Common.Models;
 using HMS.Domain.Entities;
 using HMS.Domain.Enums;
@@ -40,9 +39,9 @@ public class AdmitPatientCommandHandler(
             ReasonForAdmission = cmd.ReasonForAdmission,
             IsActive = true,
         };
-        bed.Status = BedStatus.Occupied;
-        bed.CurrentPatientId = cmd.PatientId;
-        bed.OccupiedAt = DateTime.UtcNow;
+
+        // Use domain method for bed state transition
+        bed.Occupy(cmd.PatientId);
         bedRepo.Update(bed);
 
         var patient = await patientRepo.GetByIdAsync(cmd.PatientId, ct);
@@ -57,4 +56,3 @@ public class AdmitPatientCommandHandler(
         return ApiResponse<Guid>.Success(record.Id, "Patient admitted.");
     }
 }
-

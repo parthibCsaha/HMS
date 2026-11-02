@@ -1,8 +1,7 @@
-using HMS.Application.Common.Interfaces.Services;
-using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Interfaces.Services;
 using HMS.Application.Common.Models;
 using HMS.Domain.Entities;
 using HMS.Domain.Enums;
@@ -39,7 +38,7 @@ public class CreateAppointmentCommandHandler(
             AppointmentDate = cmd.AppointmentDate,
             AppointmentTime = cmd.AppointmentTime,
             DurationMinutes = cmd.DurationMinutes,
-            Type = Enum.Parse<AppointmentType>(cmd.Type),
+            Type = Enum.Parse<AppointmentType>(cmd.Type, ignoreCase: true),
             Status = AppointmentStatus.Scheduled,
             ChiefComplaint = cmd.ChiefComplaint,
             Notes = cmd.Notes,
@@ -52,4 +51,3 @@ public class CreateAppointmentCommandHandler(
         return ApiResponse<Guid>.Success(appt.Id, "Appointment created.");
     }
 }
-

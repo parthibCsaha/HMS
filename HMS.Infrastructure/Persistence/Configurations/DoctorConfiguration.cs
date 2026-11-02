@@ -1,3 +1,4 @@
+using System.Text.Json;
 using HMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,7 +19,14 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.Property(e => e.LicenseNumber).IsRequired().HasMaxLength(50);
         builder.Property(e => e.ConsultationFee).HasPrecision(18, 2);
         builder.Property(e => e.Biography).HasMaxLength(2000);
-        builder.Property(e => e.AvailableDays).HasMaxLength(500);
+
+        // Store List<DayOfWeek> as JSON string in database
+        builder.Property(e => e.AvailableDays)
+            .HasMaxLength(500)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                v => JsonSerializer.Deserialize<List<DayOfWeek>>(v, (JsonSerializerOptions?)null) ?? new List<DayOfWeek>()
+            );
 
         builder.HasIndex(e => e.DoctorCode).IsUnique();
         builder.HasIndex(e => e.LicenseNumber).IsUnique();

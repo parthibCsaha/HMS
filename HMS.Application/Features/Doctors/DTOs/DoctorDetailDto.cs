@@ -1,4 +1,4 @@
-﻿namespace HMS.Application.Features.Doctors.DTOs;
+namespace HMS.Application.Features.Doctors.DTOs;
 
 public record DoctorDetailDto(
     Guid Id,
@@ -17,7 +17,7 @@ public record DoctorDetailDto(
     decimal ConsultationFee,
     bool IsAvailable,
     string? Biography,
-    string? AvailableDays,
+    List<DayOfWeek> AvailableDays,
     TimeSpan? ConsultationStartTime,
     TimeSpan? ConsultationEndTime,
     int SlotDurationMinutes,

@@ -13,12 +13,12 @@ public class PatientRepository(AppDbContext context)
     {
         return await Context
             .Patients.Include(p => p.User)
-            .FirstOrDefaultAsync(p => p.UserId == userId && !p.IsDeleted, ct);
+            .FirstOrDefaultAsync(p => p.UserId == userId, ct);
     }
 
     public async Task<bool> PatientCodeExistsAsync(string code, CancellationToken ct = default)
     {
-        return await Context.Patients.AnyAsync(p => p.PatientCode == code && !p.IsDeleted, ct);
+        return await Context.Patients.AnyAsync(p => p.PatientCode == code, ct);
     }
 
     public async Task<(IEnumerable<Patient> Items, int TotalCount)> GetPagedAsync(
@@ -26,7 +26,7 @@ public class PatientRepository(AppDbContext context)
         CancellationToken ct = default
     )
     {
-        var q = Context.Patients.Include(p => p.User).Where(p => !p.IsDeleted).AsNoTracking();
+        var q = Context.Patients.Include(p => p.User).AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(query.SearchTerm))
         {

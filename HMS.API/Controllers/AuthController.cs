@@ -15,62 +15,42 @@ namespace HMS.API.Controllers;
 [Route("api/[controller]")]
 [EnableRateLimiting("auth")]
 public class AuthController(ISender mediator) : ControllerBase
-
 {
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(
         [FromBody] RegisterCommand command,
         CancellationToken ct
-    )
-    {
-        var result = await mediator.Send(command, ct);
-        return Ok(result);
-    }
+    ) => Ok(await mediator.Send(command, ct));
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken ct)
-    {
-        var result = await mediator.Send(command, ct);
-        return Ok(result);
-    }
+    public async Task<IActionResult> Login(
+        [FromBody] LoginCommand command,
+        CancellationToken ct
+    ) => Ok(await mediator.Send(command, ct));
 
     [AllowAnonymous]
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken(
         [FromBody] RefreshTokenCommand command,
         CancellationToken ct
-    )
-    {
-        var result = await mediator.Send(command, ct);
-        return Ok(result);
-    }
+    ) => Ok(await mediator.Send(command, ct));
 
     [Authorize]
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout(CancellationToken ct)
-    {
-        // UserId is resolved from JWT inside ICurrentUserService in the handler.
-        return Ok(await mediator.Send(new LogoutCommand(), ct));
-    }
+    public async Task<IActionResult> Logout(CancellationToken ct) =>
+        Ok(await mediator.Send(new LogoutCommand(), ct));
 
     [Authorize]
     [HttpPost("change-password")]
     public async Task<IActionResult> ChangePassword(
         [FromBody] ChangePasswordCommand command,
         CancellationToken ct
-    )
-    {
-        // UserId is resolved from JWT inside ICurrentUserService in the handler.
-        return Ok(await mediator.Send(command, ct));
-    }
+    ) => Ok(await mediator.Send(command, ct));
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<IActionResult> GetCurrentUser(CancellationToken ct)
-    {
-        var result = await mediator.Send(new GetCurrentUserQuery(), ct);
-        return Ok(result);
-    }
+    public async Task<IActionResult> GetCurrentUser(CancellationToken ct) =>
+        Ok(await mediator.Send(new GetCurrentUserQuery(), ct));
 }

@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HMS.API.Middleware;
 
@@ -59,6 +60,11 @@ public class GlobalExceptionHandlerMiddleware(
             UnauthorizedAccessException => (
                 HttpStatusCode.Unauthorized,
                 ApiResponse.Fail("You are not authorized to perform this action.")
+            ),
+
+            DbUpdateConcurrencyException => (
+                HttpStatusCode.Conflict,
+                ApiResponse.Fail("The record was modified by another user. Please refresh and try again.")
             ),
 
             _ => (

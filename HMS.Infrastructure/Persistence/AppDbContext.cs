@@ -1,4 +1,5 @@
 using System.Reflection;
+using HMS.Domain.Common;
 using HMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,6 +56,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        // ──── Concurrency Token (PostgreSQL xmin) ────
+        // Apply optimistic concurrency to ALL entities derived from BaseEntity.
+        // Uses PostgreSQL's built-in xmin system column — no extra DB column needed.
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+            {
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property<uint>("Version")
+                    .IsRowVersion();
+            }
+        }
     }
 
     // NOTE: Audit stamping (CreatedAt, UpdatedAt, CreatedBy, UpdatedBy) is handled

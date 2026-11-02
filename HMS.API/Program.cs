@@ -2,12 +2,13 @@ using HMS.API.Middleware;
 using HMS.Application;
 using HMS.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ──── Serilog ────
+// ──── Serilog (single logging provider) ────
 builder.Host.UseSerilog(
     (context, configuration) =>
         configuration
@@ -20,6 +21,14 @@ builder.Host.UseSerilog(
 // ──── Layer DI ────
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// ──── Response Compression ────
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+});
 
 // ──── Controllers ────
 builder
@@ -113,6 +122,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("DefaultCors");
+
+app.UseResponseCompression();
 
 app.UseRateLimiter();
 

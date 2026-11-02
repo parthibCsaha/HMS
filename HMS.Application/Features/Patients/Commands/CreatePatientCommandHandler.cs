@@ -1,10 +1,10 @@
-using HMS.Application.Common.Interfaces.Services;
-using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Interfaces.Services;
 using HMS.Application.Common.Models;
 using HMS.Domain.Entities;
+using HMS.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -30,8 +30,8 @@ public class CreatePatientCommandHandler(
             UserId = cmd.UserId,
             PatientCode = code,
             DateOfBirth = cmd.DateOfBirth,
-            Gender = Enum.Parse<HMS.Domain.Enums.Gender>(cmd.Gender),
-            BloodGroup = Enum.Parse<HMS.Domain.Enums.BloodGroup>(cmd.BloodGroup),
+            Gender = Enum.Parse<Gender>(cmd.Gender, ignoreCase: true),
+            BloodGroup = Enum.Parse<BloodGroup>(cmd.BloodGroup, ignoreCase: true),
             Address = cmd.Address,
             City = cmd.City,
             State = cmd.State,
@@ -55,4 +55,3 @@ public class CreatePatientCommandHandler(
         return ApiResponse<Guid>.Success(patient.Id, "Patient created successfully.");
     }
 }
-

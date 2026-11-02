@@ -1,8 +1,7 @@
-using HMS.Application.Common.Interfaces.Services;
-using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Exceptions;
 using HMS.Application.Common.Interfaces;
 using HMS.Application.Common.Interfaces.Repositories;
+using HMS.Application.Common.Interfaces.Services;
 using HMS.Application.Common.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -28,7 +27,7 @@ public class CreateStaffCommandHandler(
         {
             UserId = cmd.UserId,
             StaffCode = code,
-            StaffType = Enum.Parse<HMS.Domain.Enums.StaffType>(cmd.StaffType),
+            StaffType = Enum.Parse<HMS.Domain.Enums.StaffType>(cmd.StaffType, ignoreCase: true),
             DepartmentId = cmd.DepartmentId,
             WardId = cmd.WardId,
             Qualification = cmd.Qualification,
@@ -42,4 +41,3 @@ public class CreateStaffCommandHandler(
         return ApiResponse<Guid>.Success(staff.Id, "Staff created successfully.");
     }
 }
-

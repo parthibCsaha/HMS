@@ -8,10 +8,4 @@ public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
         return await context.SaveChangesAsync(ct);
     }
-
-    public void Dispose()
-    {
-        context.Dispose();
-        GC.SuppressFinalize(this);
-    }
 }

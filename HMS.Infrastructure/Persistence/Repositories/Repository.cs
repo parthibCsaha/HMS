@@ -12,13 +12,13 @@ public class Repository<T>(AppDbContext context) : IRepository<T>
 
     public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
-        var entity = await DbSet.FindAsync(new object[] { id }, ct);
-        return entity is { IsDeleted: false } ? entity : null;
+        // Use FirstOrDefaultAsync instead of FindAsync to honor global query filters (soft delete).
+        return await DbSet.FirstOrDefaultAsync(e => e.Id == id, ct);
     }
 
     public virtual async Task<IEnumerable<T>> GetAllAsync(CancellationToken ct = default)
     {
-        return await DbSet.Where(e => !e.IsDeleted).ToListAsync(ct);
+        return await DbSet.ToListAsync(ct);
     }
 
     public virtual async Task<Guid> AddAsync(T entity, CancellationToken ct = default)
@@ -42,16 +42,16 @@ public class Repository<T>(AppDbContext context) : IRepository<T>
 
     public virtual async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
     {
-        return await DbSet.AnyAsync(e => e.Id == id && !e.IsDeleted, ct);
+        return await DbSet.AnyAsync(e => e.Id == id, ct);
     }
 
     public virtual async Task<int> CountAsync(CancellationToken ct = default)
     {
-        return await DbSet.CountAsync(e => !e.IsDeleted, ct);
+        return await DbSet.CountAsync(ct);
     }
 
     public virtual IQueryable<T> GetQueryable()
     {
-        return DbSet.Where(e => !e.IsDeleted).AsNoTracking();
+        return DbSet.AsNoTracking();
     }
 }
