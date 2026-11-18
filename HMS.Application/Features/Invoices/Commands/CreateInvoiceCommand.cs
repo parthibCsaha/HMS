@@ -1,4 +1,5 @@
 ﻿using HMS.Application.Common.Models;
+using HMS.Application.Common.Security;
 using MediatR;
 
 namespace HMS.Application.Features.Invoices.Commands;
@@ -12,6 +13,7 @@ public record CreateInvoiceItemInput(
     decimal DiscountPercent = 0
 );
 
+[RequirePermission(Permissions.InvoicesCreate)]
 public record CreateInvoiceCommand(
     Guid PatientId,
     Guid? AppointmentId,
