@@ -1,9 +1,11 @@
 ﻿using HMS.Application.Common.Models;
+using HMS.Application.Common.Security;
 using HMS.Application.Features.AuditLogs.DTOs;
 using MediatR;
 
 namespace HMS.Application.Features.AuditLogs.Queries;
 
+[RequirePermission(Permissions.AuditLogsView)]
 public record GetAuditLogsQuery(
     int PageNumber = 1,
     int PageSize = 20,

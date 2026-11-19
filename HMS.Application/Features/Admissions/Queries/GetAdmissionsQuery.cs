@@ -5,6 +5,7 @@ using MediatR;
 
 namespace HMS.Application.Features.Admissions.Queries;
 
+[RequirePermission(Permissions.AdmissionsView)]
 public record GetAdmissionsQuery(
     int PageNumber = 1,
     int PageSize = 10,

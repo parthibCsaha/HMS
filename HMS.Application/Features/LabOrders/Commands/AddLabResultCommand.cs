@@ -1,8 +1,10 @@
 ﻿using HMS.Application.Common.Models;
+using HMS.Application.Common.Security;
 using MediatR;
 
 namespace HMS.Application.Features.LabOrders.Commands;
 
+[RequirePermission(Permissions.LabOrdersAddResult)]
 public record AddLabResultCommand(
     Guid LabOrderId,
     Guid LabOrderItemId,

@@ -1,8 +1,10 @@
 ﻿using HMS.Application.Common.Models;
+using HMS.Application.Common.Security;
 using MediatR;
 
 namespace HMS.Application.Features.Medications.Commands;
 
+[RequirePermission(Permissions.MedicationsUpdate)]
 public record UpdateMedicationCommand(
     Guid Id,
     string Name,
